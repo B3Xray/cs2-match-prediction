@@ -3,13 +3,6 @@ import { chromium } from 'patchright'
 import { CONFIG } from '../config'
 import { verboseLog } from './log'
 
-// Load the stealth plugin and use defaults (all tricks to hide playwright usage)
-// Note: playwright-extra is compatible with most puppeteer-extra plugins
-const stealth = require('puppeteer-extra-plugin-stealth')()
-
-// Add the plugin to Playwright (any number of plugins can be added)
-chromium.use(stealth)
-
 let PAGE_SINGLETON: Page | null = null
 let BROWSER_SINGLETON: Browser | null = null
 let CONTEXT_SINGLETON: BrowserContext | null = null
@@ -38,16 +31,17 @@ export async function getBrowserInstance(): Promise<Page> {
 		headless: CONFIG.HEADLESS,
 		// devtools: true,
 		slowMo: 100,
+		channel: 'chrome',
 	})
 	const context = await browser.newContext()
 	const page = await context.newPage()
 
 	// Set custom headers
-	await page.setExtraHTTPHeaders({
-		'User-Agent':
-			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-		'Accept-Language': 'en-US,en;q=0.9',
-	})
+	// await page.setExtraHTTPHeaders({
+	// 	'User-Agent':
+	// 		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+	// 	'Accept-Language': 'en-US,en;q=0.9',
+	// })
 
 	PAGE_SINGLETON = page
 	BROWSER_SINGLETON = browser
@@ -118,7 +112,7 @@ export async function navigateTo(url: string, waitForVisible: string): Promise<L
 	if (FIRST_TIME) {
 		verboseLog('First time navigating, accepting cookies and logging in.')
 		await acceptCookies(url)
-		await logInOnce(url)
+		// await logInOnce(url)
 		FIRST_TIME = false
 	}
 
