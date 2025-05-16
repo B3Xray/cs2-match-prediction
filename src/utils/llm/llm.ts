@@ -7,10 +7,12 @@ import { verboseLog } from '../../utils'
 config()
 
 const API_KEY = process.env.OPENAI_API_KEY
-const VERBOSE = process.env.VERBOSE === 'true'
+const BASE_URL = process.env.BASE_URL
+const MODEL = process.env.MODEL
 
 const openai = new OpenAI({
 	apiKey: API_KEY,
+	baseURL: BASE_URL,
 })
 
 /**
@@ -55,7 +57,7 @@ export async function llm<T>(
 				content: JSON.stringify(userPrompt),
 			},
 		],
-		model: 'gpt-4-1106-preview',
+		model: MODEL!,
 		temperature: 0.1,
 		max_tokens: 4000,
 		tool_choice: { type: 'function', function: { name: 'response' } },
