@@ -1,6 +1,6 @@
 import { URL } from 'url'
 import { navigateTo } from '../../utils'
-import { Locator } from 'playwright'
+import { Locator } from 'patchright'
 
 export interface HLTVArticle {
 	url: URL
@@ -12,6 +12,7 @@ const SELECTOR_SEARCH = 'td a[href^="/team"]'
 const WAIT_FOR_SEARCH = '.contentCol'
 
 async function getTeamPage(team: string): Promise<string | null> {
+	debugger
 	const locator = await navigateTo(`${BASE_URL_SEARCH}?query=${team}`, WAIT_FOR_SEARCH)
 	const headlines = await locator.locator(SELECTOR_SEARCH).all()
 	const hrefs = await Promise.all(headlines.map(async headline => headline.getAttribute('href')))
@@ -42,6 +43,7 @@ const WAIT_FOR = '.contentCol'
  */
 export async function getTeamHeadlines(team: string, limit = 10): Promise<HLTVArticle[]> {
 	const teamPage = await getTeamPage(team)
+	debugger
 	const locator = await navigateTo(`${BASE_URL}${teamPage}#tab-newsBox`, WAIT_FOR)
 	const members = await getTeamMembers(locator)
 

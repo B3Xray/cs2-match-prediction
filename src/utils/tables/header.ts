@@ -1,4 +1,4 @@
-import type { Locator } from 'playwright'
+import type { Locator } from 'patchright'
 
 async function getColspan(cell: Locator): Promise<number> {
 	const colspan = await cell.getAttribute('colspan')

@@ -3,7 +3,7 @@ import * as path from 'path'
 import { Article } from './entity'
 import { HLTVArticle, getTeamHeadlines } from './headlines'
 import { fileExists, navigateTo, verboseLog } from '../../utils'
-import { Locator } from 'playwright'
+import { Locator } from 'patchright'
 import { NewsAnalysis, newsAnalyst } from '../../tools'
 
 const WAIT_FOR = 'article.newsitem'

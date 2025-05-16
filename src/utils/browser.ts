@@ -1,5 +1,5 @@
-import { Browser, BrowserContext, Page, Locator } from 'playwright'
-import { chromium } from 'playwright-extra'
+import type { Browser, BrowserContext, Page, Locator } from 'patchright'
+import { chromium } from 'patchright'
 import { CONFIG } from '../config'
 import { verboseLog } from './log'
 

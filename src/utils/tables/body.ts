@@ -1,4 +1,4 @@
-import type { Locator } from 'playwright'
+import type { Locator } from 'patchright'
 
 /**
  * Map over the table body and apply the given function to each cell of each row.

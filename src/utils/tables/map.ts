@@ -1,4 +1,4 @@
-import type { Locator } from 'playwright'
+import type { Locator } from 'patchright'
 import type { Table } from './table'
 import { mapTableHeaders } from './header'
 import { mapTableBody } from './body'
