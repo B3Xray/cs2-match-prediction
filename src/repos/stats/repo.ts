@@ -42,11 +42,17 @@ export class TeamStatsRepo {
 	private async getTeamStatsPage(team: string): Promise<string | null> {
 		const locator = await navigateTo(`${BASE_URL_SEARCH}?query=${team}`, WAIT_FOR)
 		const headlines = await locator.locator(SELECTOR_SEARCH).all()
-		const hrefs = await Promise.all(headlines.map(async headline => headline.getAttribute('href')))
+		const teamLinks = await Promise.all(
+			headlines.map(async headline => ({
+				href: await headline.getAttribute('href'),
+				name: await headline.innerText(),
+			}))
+		)
 
-		if (!hrefs[0]) return null
+		const matchingTeam = teamLinks.find(t => t.name.toLowerCase() === team.toLowerCase())
+		if (!matchingTeam?.href) return null
 
-		const statPage = `https://www.hltv.org/stats/teams${hrefs[0].replace(
+		const statPage = `https://www.hltv.org/stats/teams${matchingTeam.href.replace(
 			'/team',
 			''
 		)}?startDate=2023-06-18&endDate=2025-01-18`
