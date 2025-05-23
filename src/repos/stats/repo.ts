@@ -63,8 +63,16 @@ export class TeamStatsRepo {
 	private async getTeamPage(team: string): Promise<string | null> {
 		const locator = await navigateTo(`${BASE_URL_SEARCH}?query=${team}`, WAIT_FOR)
 		const headlines = await locator.locator(SELECTOR_SEARCH).all()
-		const hrefs = await Promise.all(headlines.map(async headline => headline.getAttribute('href')))
-		return hrefs[0] as string | null
+		const teamLinks = await Promise.all(
+			headlines.map(async headline => ({
+				href: await headline.getAttribute('href'),
+				name: await headline.innerText(),
+			}))
+		)
+		const matchingTeam = teamLinks.find(t => t.name.toLowerCase() === team.toLowerCase())
+		if (!matchingTeam?.href) return null
+
+		return matchingTeam.href
 	}
 
 	/**
