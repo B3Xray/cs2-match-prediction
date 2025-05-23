@@ -117,7 +117,11 @@ export class TeamStatsRepo {
 		if (type === TeamStatType.WORLD_RANKING) {
 			const teamPage = await this.getTeamPage(team)
 			const page = await navigateTo(`https://www.hltv.org${teamPage}`, WAIT_FOR)
-			const worldRanking = await page.locator('.profile-team-stat').first().locator('.right').textContent()
+			const worldRanking = await page
+				.locator('.profile-team-stat-50-50 .profile-team-stat')
+				.first()
+				.locator('.right')
+				.textContent()
 			if (typeof worldRanking === 'string') {
 				const teamStat = new TeamStats(team, type, {
 					'World Ranking': worldRanking,
