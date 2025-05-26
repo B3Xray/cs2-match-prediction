@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises'
 import * as path from 'path'
-import { fileExists, llm } from '../../utils'
+import { fileExists, llm, verboseLog } from '../../utils'
 import { SYSTEM_PROMPT } from './prompt'
 import { SCHEMA } from './schema'
 import { ChampionshipStat, Match } from '../../repos'
@@ -14,14 +14,21 @@ let winners = ''
  * @returns The name of the winning team.
  */
 export async function predictWinner(match: Match, cacheResponse = true): Promise<string> {
-	const articles = await match.articles()
 	const stats = await match.stats()
-
 	const matchHistory = await match.matchHistory()
-
 	const championshipStats = await match.championshipStats()
+	const articles = await match.articles()
 
-	const systemPrompt = SYSTEM_PROMPT(stats, match, articles, matchHistory, championshipStats, 'challenger')
+	verboseLog('predicting winner for', match.home, match.away)
+	// dont hardcode stage here, transform into a object arg
+	const systemPrompt = SYSTEM_PROMPT({
+		stats,
+		match,
+		articles,
+		matchHistory,
+		championshipStats,
+		stage: 'challenger',
+	})
 	const response = await llm(systemPrompt, match, SCHEMA)
 
 	if (cacheResponse) {

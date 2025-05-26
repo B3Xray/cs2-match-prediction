@@ -6,10 +6,13 @@ import {
 	toTable,
 	MatchHistory,
 	ChampionshipStats,
+	BestOf,
 } from '../../repos'
 import { toMarkdown, appendTable } from '../../utils'
 
 type Stage = 'challenger' | 'legends' | 'playoffs'
+
+const maps = ['Ancient', 'Anubis', 'Dust2', 'Inferno', 'Mirage', 'Nuke', 'Train']
 
 const stageDescription: Record<Stage, string> = {
 	challenger:
@@ -19,17 +22,36 @@ const stageDescription: Record<Stage, string> = {
 	playoffs: '8 teams face each other in a single-elimination bracket. All matches are in a Best of 3 format.',
 }
 
-export const SYSTEM_PROMPT = (
-	stats: { [key in TeamStatType]: TeamStats[] },
-	match: Match,
-	articles: Article[],
-	matchHistory: MatchHistory[],
-	championshipStats: ChampionshipStats[],
+const picksBansDescription: Record<BestOf, string> = {
+	1: 'ban alternatively 3 maps each team, then will play the one that remained.',
+	3: 'ban 2 maps, pick 2 maps, ban more two maps and finally pick the remaining map.',
+	5: 'ban one map each, then select remaining maps alternatively.',
+}
+
+interface SystemPromptArgs {
+	stats: { [key in TeamStatType]: TeamStats[] }
+	match: Match
+	articles: Article[]
+	matchHistory: MatchHistory[]
+	championshipStats: ChampionshipStats[]
 	stage: Stage
-) => `
+}
+
+export const SYSTEM_PROMPT = ({
+	stats,
+	match,
+	articles,
+	matchHistory,
+	championshipStats,
+	stage,
+}: SystemPromptArgs) => `
 You are an expert at choosing winning Counter-Strike teams in a "pick ems" competition. The teams are playing in a championship called "PGL CS2 Major Championship". This championship is divided in three stages: Challenger, Legends and Playoffs. We currently are in the ${stage} stage in which ${
 	stageDescription[stage]
-} This is going to be a Best of ${match.bestOf}.
+} This is going to be a Best of ${
+	match.bestOf
+}. In Counter-Strike competitive matches we have first a maps Picks and Bans phase, where the teams with their coach will ${
+	picksBansDescription[match.bestOf]
+}. The highest seed team will be able to start the picks and bans phase first and therefore has an advantage. Notice that this is a high-level competition, so the teams knows in advance their opponent and will study their performance on them.
 
 This is just for fun between friends. There is no betting or money to be made, but you will scrutinize your answer and think carefully.
 
@@ -42,10 +64,10 @@ The user will provide you a JSON blob of two teams of the form (for example):
 Your output will be a JSON blob of the form:
 
 \`\`\`json
-  {"winningTeam": "FURIA", "losingTeam": "Spirit"}
+  {"winningTeam": "FURIA", "losingTeam": "Spirit", mapsPlayed: ["Ancient", "Anubis", "Dust2"]}
 \`\`\`
 
-You will evaluate the statistics and articles and explain step-by-step why you think a particular team will win in match. After you choose your winner, criticize your thinking, and then respond with your final answer.
+You will evaluate the statistics, articles, scrutinize the picks and bans phase by predicting which maps will be played and explain step-by-step why you think a particular team will win in match. After you choose your winner, criticize your thinking, and then respond with your final answer.
 
 
 ${
@@ -63,20 +85,36 @@ ${toMarkdown(appendTable(championshipStats[0]!.toTable(), championshipStats[1]!.
 
 Here are some stats to help you:
 
-${Object.values(TeamStatType)
-	.map(
-		type => `
-${type}
+Team Stats
+====================================
+${toMarkdown(
+	appendTable(stats[TeamStatType.TEAM_STATS][0]!.toTable(), stats[TeamStatType.TEAM_STATS][1]!.toTable())
+)}
+
+World Ranking
+====================================
+${toMarkdown(
+	appendTable(
+		stats[TeamStatType.WORLD_RANKING][0]!.toTable(),
+		stats[TeamStatType.WORLD_RANKING][1]!.toTable()
+	)
+)}
+
+Event History
 ====================================
 ${
-	type === TeamStatType.EVENT_HISTORY
-		? // event history table should be split as the events might be diff
-		  toMarkdown(stats[type][0]!.toTable()) + '\n\n' + toMarkdown(stats[type][1]!.toTable())
-		: toMarkdown(appendTable(stats[type][0]!.toTable(), stats[type][1]!.toTable()))
+	toMarkdown(stats[TeamStatType.EVENT_HISTORY][0]!.toTable()) +
+	'\n\n' +
+	toMarkdown(stats[TeamStatType.EVENT_HISTORY][1]!.toTable())
 }
-`
-	)
-	.join('\n')}
+
+Map Pool
+====================================
+${toMarkdown(
+	appendTable(stats[TeamStatType.MAP_POOL][0]!.toTable(), stats[TeamStatType.MAP_POOL][1]!.toTable())
+)}
+
+====================================
 
 ${
 	articles.length == 0
@@ -106,12 +144,9 @@ ${toMarkdown(toTable(matchHistory))}
 		: ''
 }
 
-
 The team name you choose *MUST* be one of the following:
   * ${match.home}
   * ${match.away}
 
-Remember to explain step-by-step all of your thinking in great detail. Use bulleted lists
-to structure your output. Be decisive – do not hedge your decisions. The presented news articles may or may not be relevant, so
-assess them carefully.
+Remember to explain step-by-step all of your thinking in great detail. Describe which maps have a likely chance to be played. Use bulleted lists to structure your output. Be decisive – do not hedge your decisions. The presented news articles may or may not be relevant, so assess them carefully.
 `
