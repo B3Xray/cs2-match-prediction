@@ -6,44 +6,6 @@ The code was modified to predict specifically 2024 PGL Major Copenhagen games an
 
 Each round of the competition is fed manually.
 
-## Results
-
-* [1st execution](/RESULTS1.md)
-* [2nd execution](/RESULTS2.md) with an improvement on how to fetch articles from HLTV.
-* [3rd execution](/RESULTS3.md) after GamerLegion announcement to replace 9 Pandas.
-
-## Accuracy
-
-### First Execution
-
-Challengers teams classified to the next stage: **75%**
-
-Legends teams classified to the next stage: **62,5%**
-
-Playoffs predicted correctly: **42,9%**
-
-Winner predicted correctly? **No**
-
-### Second Execution
-
-Challengers teams classified to the next stage: **62,5%**
-
-Legends teams classified to the next stage: **75%**
-
-Playoffs predicted correctly: **42,9%**
-
-Winner predicted correctly? **No**
-
-### Third Execution
-
-Challengers teams classified to the next stage: **62,5%**
-
-Legends teams classified to the next stage: **87,5%**
-
-Playoffs predicted correctly: **28,6%**
-
-Winner predicted correctly? **No**
-
 ## Additional features added from the fork
 
 - [puppeteer-extra-plugin-stealth](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) required to scrape HLTV's website (🙏 thank you HLTV for letting us scrape your website, your content rocks and for decades it's been the go-to place everyone goes when we talk about Counter-Strike.)
