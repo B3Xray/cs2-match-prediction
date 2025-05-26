@@ -180,7 +180,6 @@ export class TeamStatsRepo {
 				const mapName = await tab.textContent()
 				if (ACTIVE_MAPS.includes(mapName!)) {
 					const href = await tab.getAttribute('href')
-					debugger
 					const mapStatsPage = await navigateTo(`${BASE_URL}${href}`, WAIT_FOR)
 
 					let mapString = ''
