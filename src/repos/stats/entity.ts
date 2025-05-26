@@ -4,6 +4,7 @@ export enum TeamStatType {
 	TEAM_STATS = 'Team Stats',
 	WORLD_RANKING = 'World ranking',
 	EVENT_HISTORY = 'Event History',
+	MAP_POOL = 'Map Pool',
 }
 
 /**

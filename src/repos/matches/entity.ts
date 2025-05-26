@@ -44,6 +44,7 @@ export class Match {
 			[TeamStatType.TEAM_STATS]: [],
 			[TeamStatType.WORLD_RANKING]: [],
 			[TeamStatType.EVENT_HISTORY]: [],
+			[TeamStatType.MAP_POOL]: [],
 		}
 
 		for (const type of Object.values(TeamStatType)) {

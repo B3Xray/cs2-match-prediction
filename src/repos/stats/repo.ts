@@ -8,8 +8,10 @@ import * as path from 'path'
 const WAIT_FOR = '.contentCol'
 
 const BASE_URL_SEARCH = 'https://www.hltv.org/search'
+const BASE_URL = 'https://www.hltv.org'
 const SELECTOR_SEARCH = 'td a[href^="/team"]'
 
+// move to a save file? add env var?
 const saveStat = async (stat: TeamStats) => {
 	const statPath = path.join(__filename, '../../../../', 'stats-cached/')
 	const filename = `${stat.team}-${stat.type}.json`
@@ -157,6 +159,44 @@ export class TeamStatsRepo {
 			}
 
 			const teamStat = new TeamStats(team, type, eventHistoryObj)
+			saveStat(teamStat)
+
+			return teamStat
+		}
+
+		if (type === TeamStatType.MAP_POOL) {
+			const statsPage = await this.getTeamStatsPage(team)
+			if (!statsPage) {
+				throw new Error(`No stats page found for ${team} and ${type}`)
+			}
+			const mapsPage = statsPage.replace('/teams/', '/teams/maps/')
+			const page = await navigateTo(mapsPage, WAIT_FOR)
+
+			const ACTIVE_MAPS = ['Ancient', 'Anubis', 'Dust2', 'Inferno', 'Mirage', 'Nuke', 'Train']
+			let mapsObject: Record<string, string> = {}
+
+			const mapTabs = await page.locator('.stats-top-menu a.stats-top-menu-item').all()
+			for (const tab of mapTabs) {
+				const mapName = await tab.textContent()
+				if (ACTIVE_MAPS.includes(mapName!)) {
+					const href = await tab.getAttribute('href')
+					debugger
+					const mapStatsPage = await navigateTo(`${BASE_URL}${href}`, WAIT_FOR)
+
+					let mapString = ''
+					const statRows = await mapStatsPage.locator('.stats-rows .stats-row').all()
+					for (const row of statRows) {
+						const title = await row.locator('span').first()?.textContent()
+						const value = await row.locator('span').last()?.textContent()
+						if (typeof title === 'string' && typeof value === 'string') {
+							mapString += `${title}: ${value}, `
+						}
+					}
+					mapsObject[mapName!] = mapString
+				}
+			}
+
+			const teamStat = new TeamStats(team, type, mapsObject)
 			saveStat(teamStat)
 
 			return teamStat
