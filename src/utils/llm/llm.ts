@@ -44,55 +44,59 @@ export async function llm<T>(
 	// that analysis, we can ensure that the LLM will not just jump
 	// right into generating the tool parameters, but will also
 	// write down thoughts in a scratchpad (of sorts) about it first.
-	const schema = SCHEMA(toolSchema.schema) as any
-
-	const response = await openai.chat.completions.create({
-		messages: [
-			{
-				role: 'system',
-				content: systemPrompt,
-			},
-			{
-				role: 'user',
-				content: JSON.stringify(userPrompt),
-			},
-		],
-		model: MODEL!,
-		temperature: 0.1,
-		max_tokens: 4000,
-		tool_choice: { type: 'function', function: { name: 'response' } },
-		tools: [
-			{
-				type: 'function',
-				function: {
-					name: 'response',
-					description: "The JSON response to the user's inquiry.",
-					parameters: schema,
+	try {
+		const schema = SCHEMA(toolSchema.schema) as any
+		const response = await openai.chat.completions.create({
+			messages: [
+				{
+					role: 'system',
+					content: systemPrompt,
 				},
-			},
-		],
-	})
+				{
+					role: 'user',
+					content: JSON.stringify(userPrompt),
+				},
+			],
+			model: MODEL!,
+			temperature: 0.1,
+			max_tokens: 4000,
+			tool_choice: { type: 'function', function: { name: 'response' } },
+			tools: [
+				{
+					type: 'function',
+					function: {
+						name: 'response',
+						description: "The JSON response to the user's inquiry.",
+						parameters: schema,
+					},
+				},
+			],
+		})
 
-	// TODO: Do better validation on the response.
-	const content = response.choices[0]?.message?.tool_calls![0]?.function.arguments
+		// TODO: Do better validation on the response.
+		const content = response.choices[0]?.message?.tool_calls![0]?.function.arguments
 
-	if (content == null) {
-		throw new Error('LLM did not return arguments to parse')
+		if (content == null) {
+			throw new Error('LLM did not return arguments to parse')
+		}
+
+		const contentObj = JSON.parse(content)
+
+		verboseLog('\nRESPONSE:\n')
+		verboseLog(JSON.stringify(contentObj, null, 2))
+		verboseLog('=============================================')
+
+		let conclusion = contentObj.conclusion
+		// Edge case: LLM sometimes might not provide the conclusion required and it will return
+		// an string instead of a object requested in the schema.
+		if (typeof conclusion === 'string') {
+			console.warn('LLM did not return the requested schema', conclusion)
+			return { summary: conclusion, analysis: contentObj.analysis } as T
+		}
+
+		return { ...contentObj.conclusion, analysis: contentObj.analysis } as T
+	} catch (error) {
+		console.error('LLM error', error)
+		throw error
 	}
-
-	const contentObj = JSON.parse(content)
-
-	verboseLog('\nRESPONSE:\n')
-	verboseLog(JSON.stringify(contentObj, null, 2))
-	verboseLog('=============================================')
-
-	let conclusion = contentObj.conclusion
-	// Edge case: LLM sometimes might not provide the conclusion required and it will return
-	// an string instead of a object requested in the schema.
-	if (typeof conclusion === 'string') {
-		console.warn('LLM did not return the requested schema', conclusion)
-		return { summary: conclusion, analysis: contentObj.analysis } as T
-	}
-
-	return { ...contentObj.conclusion, analysis: contentObj.analysis } as T
 }
