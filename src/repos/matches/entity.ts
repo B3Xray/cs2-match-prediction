@@ -1,8 +1,9 @@
 import { ChampionshipRepo, ChampionshipStats } from '../championship'
 import { ArticleRepo, Article } from '../articles'
 import { TeamStatsRepo, TeamStats, TeamStatType, MatchHistory } from '../stats'
+import { verboseLog } from '../../utils'
 
-type BestOf = '1' | '3' | '5'
+export type BestOf = '1' | '3' | '5'
 
 /**
  * A match up between two teams.
@@ -28,6 +29,7 @@ export class Match {
 	// 1) fetch the articles associated with the given teams in the match
 	public async articles(): Promise<Article[]> {
 		const teams = [this.away, this.home]
+		verboseLog('Fetching articles for teams', teams)
 		return new ArticleRepo().findByTeams(teams)
 	}
 

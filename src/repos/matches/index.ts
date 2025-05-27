@@ -1,2 +1,2 @@
 export { MatchRepo } from './repo'
-export { Match } from './entity'
+export { Match, BestOf } from './entity'
