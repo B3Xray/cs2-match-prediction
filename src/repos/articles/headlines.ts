@@ -68,6 +68,7 @@ export async function getTeamHeadlines(team: string, limit = 10): Promise<HLTVAr
 		if (!anchor.href) return
 		if (!anchor.title) return
 
+		// articles without relevant content
 		if (anchor.href.includes('former-00nation')) return
 		if (anchor.href.includes('invited')) return
 		if (anchor.href.includes('fantasy')) return
@@ -75,8 +76,12 @@ export async function getTeamHeadlines(team: string, limit = 10): Promise<HLTVAr
 		if (anchor.href.endsWith('revealed')) return
 		if (anchor.href.includes('schedule')) return
 		if (anchor.href.includes('team-list')) return
+		if (anchor.href.includes('live-updates')) return
+		if (anchor.href.includes('short')) return
 		// general guides
 		if (anchor.href.endsWith('guide')) return
+		// unrelated to the major
+		if (anchor.href.includes('bestia')) return
 
 		return (
 			anchor.title.includes(team) ||
