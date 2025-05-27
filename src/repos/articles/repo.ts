@@ -5,7 +5,7 @@ import { HLTVArticle, getTeamHeadlines } from './headlines'
 import { fileExists, navigateTo, verboseLog } from '../../utils'
 import { Locator } from 'patchright'
 import { NewsAnalysis, newsAnalyst } from '../../tools'
-import { CONFIG } from 'config'
+import { CONFIG } from '../../config'
 
 const WAIT_FOR = 'article.newsitem'
 const ARTICLE_TITLE = 'h1.headline'

@@ -1,4 +1,4 @@
-import { CONFIG } from 'config'
+import { CONFIG } from '../../config'
 import { fileExists, navigateTo, verboseLog } from '../../utils'
 import { TeamStats, TeamStatType as StatType, TeamStatType } from './entity'
 import { MatchHistory } from './gameHistory'

@@ -4,7 +4,7 @@ import { fileExists, llm, verboseLog } from '../../utils'
 import { SYSTEM_PROMPT } from './prompt'
 import { SCHEMA } from './schema'
 import { ChampionshipStat, Match } from '../../repos'
-import { CONFIG } from 'config'
+import { CONFIG } from '../../config'
 
 let winners = ''
 

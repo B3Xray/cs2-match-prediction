@@ -3,7 +3,7 @@ import * as path from 'path'
 import { fileExists, llm, verboseLog } from '../../utils'
 import { SYSTEM_PROMPT } from './prompt'
 import { SCHEMA } from './schema'
-import { CONFIG } from 'config'
+import { CONFIG } from '../../config'
 
 export type NewsAnalysis = (typeof SCHEMA)['type']
 
