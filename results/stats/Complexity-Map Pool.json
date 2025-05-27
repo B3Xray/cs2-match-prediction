@@ -1,0 +1,12 @@
+{
+  "team": "Complexity",
+  "type": "Map Pool",
+  "stats": {
+    "Ancient": "Rounds won: 278, Times played: 24, Wins / draws / losses: 13 / 0 / 11, Total rounds played: 524, Win percent: 54.2%, Pistol rounds: 48, Pistol rounds won: 30, Pistol round win percent: 62.5%, CT round win percent: 56.9%, T round win percent: 49.0%, Pick percent: 5.4%, Ban percent: 27.2%, ",
+    "Anubis": "Rounds won: 403, Times played: 35, Wins / draws / losses: 22 / 0 / 13, Total rounds played: 763, Win percent: 62.9%, Pistol rounds: 70, Pistol rounds won: 38, Pistol round win percent: 54.3%, CT round win percent: 46.8%, T round win percent: 59.6%, Pick percent: 41.0%, Ban percent: 1.2%, ",
+    "Dust2": "Rounds won: 185, Times played: 17, Wins / draws / losses: 6 / 0 / 11, Total rounds played: 400, Win percent: 35.3%, Pistol rounds: 34, Pistol rounds won: 13, Pistol round win percent: 38.2%, CT round win percent: 43.1%, T round win percent: 49.3%, Pick percent: 4.5%, Ban percent: 25.3%, ",
+    "Inferno": "Rounds won: 138, Times played: 13, Wins / draws / losses: 5 / 0 / 8, Total rounds played: 282, Win percent: 38.5%, Pistol rounds: 26, Pistol rounds won: 13, Pistol round win percent: 50.0%, CT round win percent: 47.9%, T round win percent: 50.4%, Pick percent: 9.3%, Ban percent: 17.6%, ",
+    "Nuke": "Rounds won: 142, Times played: 13, Wins / draws / losses: 7 / 0 / 6, Total rounds played: 282, Win percent: 53.8%, Pistol rounds: 26, Pistol rounds won: 14, Pistol round win percent: 53.8%, CT round win percent: 60.4%, T round win percent: 39.1%, Pick percent: 2.6%, Ban percent: 17.1%, ",
+    "Train": "Rounds won: 164, Times played: 13, Wins / draws / losses: 10 / 0 / 3, Total rounds played: 269, Win percent: 76.9%, Pistol rounds: 26, Pistol rounds won: 18, Pistol round win percent: 69.2%, CT round win percent: 59.8%, T round win percent: 61.8%, Pick percent: 81.2%, Ban percent: 0.0%, "
+  }
+}
