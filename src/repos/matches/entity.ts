@@ -14,12 +14,12 @@ export class Match {
 	/**
 	 * Creates a new instance of a Match.
 	 *
-	 * @param away The away team.
 	 * @param home The home team.
+	 * @param away The away team.
 	 * @param bestOf 1, 3 or 5
 	 * @returns A new instance of Match.
 	 */
-	constructor(public away: string, public home: string, public bestOf: BestOf) {}
+	constructor(public home: string, public away: string, public bestOf: BestOf) {}
 
 	/**
 	 * Get the list of articles associated with the given teams in the match.
