@@ -10,16 +10,19 @@ import {
 } from '../../repos'
 import { toMarkdown, appendTable } from '../../utils'
 
-type Stage = 'challenger' | 'legends' | 'playoffs'
+type Stage = 'stage1' | 'stage2' | 'stage3' | 'playoffs'
 
 const maps = ['Ancient', 'Anubis', 'Dust2', 'Inferno', 'Mirage', 'Nuke', 'Train']
 
 const stageDescription: Record<Stage, string> = {
-	challenger:
+	stage1:
 		'16 teams face each other in a Swiss format. The top 8 teams are classified to the next stage and the bottom 8 are eliminated. Elimination and advancements matches are in a Best of 3 format where the others are in a Best of 1 format.',
-	legends:
+	stage2:
 		'16 teams face each other in a Swiss format. The top 8 teams are classified to the next stage and the bottom 8 are eliminated. Elimination and advancements matches are in a Best of 3 format where the others are in a Best of 1 format.',
-	playoffs: '8 teams face each other in a single-elimination bracket. All matches are in a Best of 3 format.',
+	stage3:
+		'16 teams face each other in a Swiss format. The top 8 teams are classified to the next stage and the bottom 8 are eliminated. Elimination and advancements matches are in a Best of 3 format where the others are in a Best of 1 format.',
+	playoffs:
+		'8 teams face each other in a single-elimination bracket. All matches are in a Best of 3 format and the final match is a best of 5.',
 }
 
 const picksBansDescription: Record<BestOf, string> = {
