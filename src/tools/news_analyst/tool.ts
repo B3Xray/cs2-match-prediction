@@ -3,6 +3,7 @@ import * as path from 'path'
 import { fileExists, llm, verboseLog } from '../../utils'
 import { SYSTEM_PROMPT } from './prompt'
 import { SCHEMA } from './schema'
+import { CONFIG } from 'config'
 
 export type NewsAnalysis = (typeof SCHEMA)['type']
 
@@ -14,19 +15,14 @@ export type NewsAnalysis = (typeof SCHEMA)['type']
  * @param content The content of the article.
  * @returns {Promise<NewsAnalysis>} The analysis of the article.
  */
-export async function newsAnalyst(
-	title: string,
-	content: string,
-	team: string,
-	cacheResponse = true
-): Promise<NewsAnalysis> {
+export async function newsAnalyst(title: string, content: string, team: string): Promise<NewsAnalysis> {
 	const articlesPath = path.join(__filename, '../../../../', 'articles-cached/')
 	const filename = `${team}-${title}.json`
 	const filePath = path.join(articlesPath, filename)
 
 	const summaryAlreadyDone = await fileExists(filePath)
 
-	if (cacheResponse && summaryAlreadyDone) {
+	if (CONFIG.CACHE && summaryAlreadyDone) {
 		const file = await fs.readFile(filePath, 'utf-8')
 		verboseLog('returning cached article for', title)
 		return JSON.parse(file) as NewsAnalysis
@@ -38,7 +34,7 @@ export async function newsAnalyst(
 
 	const response = await llm(prompt, article, SCHEMA)
 
-	if (cacheResponse) {
+	if (CONFIG.CACHE) {
 		await fs.mkdir(articlesPath, { recursive: true })
 		await fs.writeFile(filePath, JSON.stringify(response), 'utf-8')
 	}

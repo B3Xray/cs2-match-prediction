@@ -1,3 +1,4 @@
+import { CONFIG } from 'config'
 import { fileExists, navigateTo, verboseLog } from '../../utils'
 import { TeamStats, TeamStatType as StatType, TeamStatType } from './entity'
 import { MatchHistory } from './gameHistory'
@@ -11,8 +12,9 @@ const BASE_URL_SEARCH = 'https://www.hltv.org/search'
 const BASE_URL = 'https://www.hltv.org'
 const SELECTOR_SEARCH = 'td a[href^="/team"]'
 
-// move to a save file? add env var?
 const saveStat = async (stat: TeamStats) => {
+	if (!CONFIG.CACHE) return
+
 	const statPath = path.join(__filename, '../../../../', 'stats-cached/')
 	const filename = `${stat.team}-${stat.type}.json`
 	const filePath = path.join(statPath, filename)

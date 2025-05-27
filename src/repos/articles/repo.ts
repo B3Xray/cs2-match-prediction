@@ -5,6 +5,7 @@ import { HLTVArticle, getTeamHeadlines } from './headlines'
 import { fileExists, navigateTo, verboseLog } from '../../utils'
 import { Locator } from 'patchright'
 import { NewsAnalysis, newsAnalyst } from '../../tools'
+import { CONFIG } from 'config'
 
 const WAIT_FOR = 'article.newsitem'
 const ARTICLE_TITLE = 'h1.headline'
@@ -97,17 +98,19 @@ export class ArticleRepo {
 	private async fetchOne(article: HLTVArticle, team: string): Promise<Article> {
 		if (!article.title) throw new Error('Article without an title.')
 
-		const articlesPath = path.join(__filename, '../../../../', 'articles-cached/')
-		const filename = `${team}-${article.title}.json`
-		const filePath = path.join(articlesPath, filename)
+		if (CONFIG.CACHE) {
+			const articlesPath = path.join(__filename, '../../../../', 'articles-cached/')
+			const filename = `${team}-${article.title}.json`
+			const filePath = path.join(articlesPath, filename)
 
-		const summaryAlreadyDone = await fileExists(filePath)
+			const summaryAlreadyDone = await fileExists(filePath)
 
-		if (summaryAlreadyDone) {
-			const file = await fs.readFile(filePath, 'utf-8')
-			verboseLog('returning cached file for article', article.url)
-			const analysis = JSON.parse(file) as NewsAnalysis
-			return new Article(article.title, analysis.summary, team)
+			if (summaryAlreadyDone) {
+				const file = await fs.readFile(filePath, 'utf-8')
+				verboseLog('returning cached file for article', article.url.href)
+				const analysis = JSON.parse(file) as NewsAnalysis
+				return new Article(article.title, analysis.summary, team)
+			}
 		}
 
 		const page = await navigateTo(article.url.toString(), WAIT_FOR)

@@ -13,7 +13,7 @@ let winners = ''
  * @param match The match to predict the winner of.
  * @returns The name of the winning team.
  */
-export async function predictWinner(match: Match, cacheResponse = true): Promise<string> {
+export async function predictWinner(match: Match): Promise<string> {
 	const stats = await match.stats()
 	const matchHistory = await match.matchHistory()
 	const championshipStats = await match.championshipStats()
