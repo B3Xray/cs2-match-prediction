@@ -1,5 +1,5 @@
 import { URL } from 'url'
-import { navigateTo } from '../../utils'
+import { navigateTo, verboseLog } from '../../utils'
 import { Locator } from 'patchright'
 
 export interface HLTVArticle {
@@ -49,6 +49,7 @@ const WAIT_FOR = '.contentCol'
  * Crawls the search page for HLTV news for a team in specific and grabs the URLs for each headline.
  */
 export async function getTeamHeadlines(team: string, limit = 10): Promise<HLTVArticle[]> {
+	verboseLog('Fetching HLTV headlines for team', team)
 	const teamPage = await getTeamPage(team)
 	const locator = await navigateTo(`${BASE_URL}${teamPage}#tab-newsBox`, WAIT_FOR)
 	const members = await getTeamMembers(locator)
