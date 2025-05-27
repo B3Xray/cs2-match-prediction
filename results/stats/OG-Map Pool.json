@@ -1,0 +1,13 @@
+{
+  "team": "OG",
+  "type": "Map Pool",
+  "stats": {
+    "Ancient": "Rounds won: 809, Times played: 68, Wins / draws / losses: 43 / 0 / 25, Total rounds played: 1501, Win percent: 63.2%, Pistol rounds: 136, Pistol rounds won: 75, Pistol round win percent: 55.1%, CT round win percent: 53.1%, T round win percent: 54.6%, Pick percent: 66.2%, Ban percent: 4.6%, ",
+    "Anubis": "Rounds won: 406, Times played: 35, Wins / draws / losses: 18 / 0 / 17, Total rounds played: 785, Win percent: 51.4%, Pistol rounds: 70, Pistol rounds won: 42, Pistol round win percent: 60.0%, CT round win percent: 46.0%, T round win percent: 56.9%, Pick percent: 9.9%, Ban percent: 16.1%, ",
+    "Dust2": "Rounds won: 319, Times played: 29, Wins / draws / losses: 13 / 0 / 16, Total rounds played: 663, Win percent: 44.8%, Pistol rounds: 58, Pistol rounds won: 34, Pistol round win percent: 58.6%, CT round win percent: 51.2%, T round win percent: 45.0%, Pick percent: 14.5%, Ban percent: 18.6%, ",
+    "Inferno": "Rounds won: 369, Times played: 36, Wins / draws / losses: 18 / 0 / 18, Total rounds played: 756, Win percent: 50.0%, Pistol rounds: 72, Pistol rounds won: 36, Pistol round win percent: 50.0%, CT round win percent: 50.0%, T round win percent: 47.5%, Pick percent: 15.5%, Ban percent: 10.9%, ",
+    "Mirage": "Rounds won: 249, Times played: 21, Wins / draws / losses: 11 / 0 / 10, Total rounds played: 496, Win percent: 52.4%, Pistol rounds: 42, Pistol rounds won: 22, Pistol round win percent: 52.4%, CT round win percent: 51.9%, T round win percent: 48.3%, Pick percent: 12.2%, Ban percent: 49.6%, ",
+    "Nuke": "Rounds won: 362, Times played: 31, Wins / draws / losses: 20 / 0 / 11, Total rounds played: 678, Win percent: 64.5%, Pistol rounds: 62, Pistol rounds won: 37, Pistol round win percent: 59.7%, CT round win percent: 57.7%, T round win percent: 48.8%, Pick percent: 10.7%, Ban percent: 14.5%, ",
+    "Train": "Rounds won: 15, Times played: 2, Wins / draws / losses: 0 / 0 / 2, Total rounds played: 41, Win percent: 0.0%, Pistol rounds: 4, Pistol rounds won: 3, Pistol round win percent: 75.0%, CT round win percent: 45.8%, T round win percent: 23.5%, Pick percent: 0.0%, Ban percent: 90.2%, "
+  }
+}
