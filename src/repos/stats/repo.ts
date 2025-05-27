@@ -50,14 +50,14 @@ export class TeamStatsRepo {
 				name: await headline.innerText(),
 			}))
 		)
-
 		const matchingTeam = teamLinks.find(t => t.name.toLowerCase() === team.toLowerCase())
 		if (!matchingTeam?.href) return null
 
 		const statPage = `https://www.hltv.org/stats/teams${matchingTeam.href.replace(
 			'/team',
 			''
-		)}?startDate=2023-06-18&endDate=2025-01-18`
+			// TODO: add date-fns, now to 6 months ago
+		)}?startDate=2024-06-18&endDate=2025-06-18`
 
 		return statPage
 	}
@@ -240,7 +240,8 @@ export class TeamStatsRepo {
 	private async getTeamsMatchHistory(team0Id: string, team1Id: string): Promise<MatchHistory[]> {
 		const BASE_URL_RESULTS = 'https://www.hltv.org/results'
 		const url = new URL(BASE_URL_RESULTS)
-		url.searchParams.append('startDate', '2023-06-18')
+		// TODO: add date-fns, now to 6 months ago
+		url.searchParams.append('startDate', '2024-06-18')
 		url.searchParams.append('endDate', '2025-06-18')
 		url.searchParams.append('requireAllTeams', '')
 		url.searchParams.append('team', team0Id)
