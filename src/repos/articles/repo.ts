@@ -47,6 +47,33 @@ export class ArticleRepo {
 		// 3) in homepage, get a list of URLs
 		if (teams.length < 2) throw new Error('Not enough Teams in fetchFromMatchTeams')
 
+		if (CONFIG.CACHE && !CONFIG.LOOK_FOR_NEW_ARTICLES) {
+			const articlesPath = path.join(__filename, '../../../../', 'articles-cached/')
+
+			// Read all files in the articles-cached directory
+			const files = await fs.readdir(articlesPath)
+
+			// Filter and process files for each team
+			for (const team of teams) {
+				const teamFiles = files.filter(file => file.startsWith(`${team}-`))
+
+				for (const file of teamFiles) {
+					const filePath = path.join(articlesPath, file)
+					const fileContent = await fs.readFile(filePath, 'utf-8')
+					const analysis = JSON.parse(fileContent) as NewsAnalysis
+
+					// Extract article title from filename by removing team- prefix and .json suffix
+					const articleTitle = file.slice(team.length + 1, -5)
+
+					const article = new Article(articleTitle, analysis.summary, team)
+					ArticleRepo.articles.push(article)
+				}
+			}
+
+			verboseLog('returning cached articles for', teams)
+			return ArticleRepo.articles
+		}
+
 		const team0List = await getTeamHeadlines(teams[0]!)
 		const team1List = await getTeamHeadlines(teams[1]!)
 
@@ -62,12 +89,11 @@ export class ArticleRepo {
 		// NOTE: We explicitly use a for-loop instead of `Promise.all` here because
 		// we want to force sequential execution (instead of parallel) because these are
 		// all sharing the same browser instance.
-		const articles: Article[] = []
 
 		for (const article of team0List) {
 			try {
 				const result = await this.fetchOne(article, teams[0]!)
-				articles.push(result)
+				ArticleRepo.articles.push(result)
 			} catch (e) {
 				// Sometimes things timeout or a rogue headline sneaks in
 				// that is actually an ad. We ignore it and move on.
@@ -78,7 +104,7 @@ export class ArticleRepo {
 		for (const article of team1List) {
 			try {
 				const result = await this.fetchOne(article, teams[1]!)
-				articles.push(result)
+				ArticleRepo.articles.push(result)
 			} catch (e) {
 				// Sometimes things timeout or a rogue headline sneaks in
 				// that is actually an ad. We ignore it and move on.
@@ -86,7 +112,7 @@ export class ArticleRepo {
 			}
 		}
 
-		return articles
+		return ArticleRepo.articles
 	}
 
 	/**
