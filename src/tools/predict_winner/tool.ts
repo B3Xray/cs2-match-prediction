@@ -4,6 +4,7 @@ import { fileExists, llm, verboseLog } from '../../utils'
 import { SYSTEM_PROMPT } from './prompt'
 import { SCHEMA } from './schema'
 import { ChampionshipStat, Match } from '../../repos'
+import { CONFIG } from 'config'
 
 let winners = ''
 
@@ -31,7 +32,7 @@ export async function predictWinner(match: Match): Promise<string> {
 	})
 	const response = await llm(systemPrompt, match, SCHEMA)
 
-	if (cacheResponse) {
+	if (CONFIG.CACHE) {
 		const matchesPath = path.join(__filename, '../../../../', 'matches-cached/')
 		const filename = `${match.home}-${match.away}.json`
 		const filePath = path.join(matchesPath, filename)
