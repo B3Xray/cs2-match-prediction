@@ -41,6 +41,7 @@
 	},
 	"homepage": "https://github.com/luizcieslak/pick-ems#readme",
 	"devDependencies": {
+		"@types/yargs": "^17.0.33",
 		"json-schema-to-ts": "^3.0.0",
 		"lint-staged": "^13.2.2",
 		"nodemon": "^3.0.1",
@@ -54,6 +55,7 @@
 		"patchright": "^1.52.3",
 		"playwright": "^1.42.1",
 		"playwright-extra": "^4.3.6",
-		"tslib": "^2.5.0"
+		"tslib": "^2.5.0",
+		"yargs": "^17.7.2"
 	}
 }
