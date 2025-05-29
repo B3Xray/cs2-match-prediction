@@ -18,13 +18,29 @@ export class ArticleRepo {
 	// Cached list of articles for the week.
 	private static articles: Article[] = []
 
+	// constructor() {
+	// 	if(CONFIG.CACHE && !CONFIG.LOOK_FOR_NEW_ARTICLES) {
+	// 		const articlesPath = path.join(__filename, '../../../../', 'articles-cached/')
+	// 		const filename = `${teams[0]}-${teams[1]}.json`
+	// 		const filePath = path.join(articlesPath, filename)
+
+	// 		const summaryAlreadyDone = await fileExists(filePath)
+
+	// 		if (summaryAlreadyDone) {
+	// 			const file = await fs.readFile(filePath, 'utf-8')
+	// 			verboseLog('returning cached file for article', article.url.href)
+	// 			const analysis = JSON.parse(file) as NewsAnalysis
+	// 			return new Article(article.title, analysis.summary, team)
+	// 		}
+	// 	}
+	// }
+
 	/**
 	 * Get the list of articles associated with the given teams.
 	 *
 	 * @param teams The list of teams to filter by.
 	 * @returns {Promise<Article[]>} The list of articles for the week associated with the given teams.
 	 */
-
 	public async findByTeams(teams: string[]): Promise<Article[]> {
 		// check if there's already articles for these teams
 		const i = ArticleRepo.articles.findIndex(article => teams.includes(article.primaryTeam))

@@ -28,9 +28,21 @@ export async function llm<T>(
 	// TODO: There is a lot going on this function. We should
 	// break it up / clean it up.
 
+	const schema = SCHEMA(toolSchema.schema)
+	const isReallyOpenAI = MODEL?.toLowerCase().includes('gpt')
+	const systemPromptWithSchema = `
+		${systemPrompt}
+		You must respond directly ONLY with a JSON object that is valid and matching this schema:
+		${JSON.stringify(schema)}
+
+		DO NOT use markdown syntax or any other formatting.
+	`
+
+	console.log('isReallyOpenAI', isReallyOpenAI, 'prommpt', systemPromptWithSchema)
+
 	verboseLog('=============================================')
 	verboseLog('Starting request to LLM:')
-	verboseLog('\nSYSTEM:\n', systemPrompt)
+	// verboseLog('\nSYSTEM:\n', systemPrompt)
 	verboseLog('\nUSER:\n', JSON.stringify(userPrompt))
 
 	// We wrap the provided schema in a parent schema that forces
@@ -45,12 +57,14 @@ export async function llm<T>(
 	// right into generating the tool parameters, but will also
 	// write down thoughts in a scratchpad (of sorts) about it first.
 	try {
-		const schema = SCHEMA(toolSchema.schema) as any
 		const response = await openai.chat.completions.create({
 			messages: [
 				{
 					role: 'system',
-					content: systemPrompt,
+					content: isReallyOpenAI
+						? systemPrompt
+						: // ensure it responds with a JSON.
+						  systemPromptWithSchema,
 				},
 				{
 					role: 'user',
@@ -59,28 +73,37 @@ export async function llm<T>(
 			],
 			model: MODEL!,
 			temperature: 0.1,
-			max_tokens: 4000,
-			tool_choice: { type: 'function', function: { name: 'response' } },
-			tools: [
-				{
-					type: 'function',
-					function: {
-						name: 'response',
-						description: "The JSON response to the user's inquiry.",
-						parameters: schema,
-					},
-				},
-			],
+			max_completion_tokens: 4000,
+			tool_choice: isReallyOpenAI ? { type: 'function', function: { name: 'response' } } : undefined,
+			tools: isReallyOpenAI
+				? [
+						{
+							type: 'function',
+							function: {
+								name: 'response',
+								description: "The JSON response to the user's inquiry.",
+								parameters: schema,
+							},
+						},
+				  ]
+				: undefined,
 		})
 
-		// TODO: Do better validation on the response.
-		const content = response.choices[0]?.message?.tool_calls![0]?.function.arguments
+		// Handle response parsing based on whether tools were used
+		let content = isReallyOpenAI
+			? response.choices[0]?.message?.tool_calls?.[0]?.function.arguments
+			: response.choices[0]?.message?.content
 
 		if (content == null) {
-			throw new Error('LLM did not return arguments to parse')
+			throw new Error('LLM did not return content to parse')
 		}
 
-		const contentObj = JSON.parse(content)
+		// some models like Deepseek return the json in a code block
+		if (content.includes('```json')) {
+			content = content.split('```json')[1]!.split('```')[0]
+		}
+
+		const contentObj = JSON.parse(content!)
 
 		verboseLog('\nRESPONSE:\n')
 		verboseLog(JSON.stringify(contentObj, null, 2))

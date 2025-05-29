@@ -7,7 +7,7 @@ let PAGE_SINGLETON: Page | null = null
 let BROWSER_SINGLETON: Browser | null = null
 let CONTEXT_SINGLETON: BrowserContext | null = null
 // Toggle this to true if accepting cookies or logging in is something necessary to scrape.
-let FIRST_TIME: boolean = false
+let FIRST_TIME: boolean = true
 
 const authFile = 'playwright/.auth/user.json'
 
@@ -30,10 +30,16 @@ export async function getBrowserInstance(): Promise<Page> {
 	const browser = await chromium.launch({
 		headless: CONFIG.HEADLESS,
 		// devtools: true,
-		slowMo: 100,
+		slowMo: 500,
 		channel: 'chrome',
 	})
-	const context = await browser.newContext()
+	const context = await chromium.launchPersistentContext('...', {
+		channel: 'chrome',
+		headless: false,
+		viewport: null,
+		// do NOT add custom browser headers or userAgent
+	})
+
 	const page = await context.newPage()
 
 	// Set custom headers
@@ -108,18 +114,20 @@ export async function logInOnce(url: string) {
  * @returns {Promise<Locator>} The locator for the given selector.
  */
 export async function navigateTo(url: string, waitForVisible: string): Promise<Locator> {
-	// it seems neither of these functions are necessary anymore, skipping.
-	if (FIRST_TIME) {
-		verboseLog('First time navigating, accepting cookies and logging in.')
-		await acceptCookies(url)
-		// await logInOnce(url)
-		FIRST_TIME = false
-	}
+	// Add a random delay of 1 to 5 seconds to simulate human behavior
+	await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 5000)))
 
-	const browser = await getBrowserInstance()
-	await browser.goto(url)
+	// if (FIRST_TIME) {
+	// 	verboseLog('First time navigating, accepting cookies and logging in.')
+	// 	await acceptCookies(url)
+	// 	// await logInOnce(url)
+	// 	FIRST_TIME = false
+	// }
 
-	const container = browser.locator(waitForVisible)
+	const page = await getBrowserInstance()
+	await page.goto(url)
+
+	const container = page.locator(waitForVisible)
 	// await container.waitFor({ state: 'visible' })
 
 	return container
