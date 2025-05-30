@@ -15,6 +15,30 @@ const openai = new OpenAI({
 	baseURL: BASE_URL,
 })
 
+// In your llm function, before JSON.parse, add this cleanup:
+function cleanAndFormatJSON(content: string) {
+    // Remove any potential markdown code blocks
+    content = content.replace(/```json/g, '').replace(/```/g, '');
+    
+    // Clean up newlines and extra spaces
+    content = content.replace(/[\n\r\t]/g, ' ').replace(/\s+/g, ' ').trim();
+    
+    // // Fix potential double quotes within text
+    // content = content.replace(/(?<=\{|\[|,|\:)\s*"([^"]*)"(?=\s*[\},\]])/g, (match) => {
+    //     return match.replace(/"/g, '\\"');
+    // });
+
+    try {
+        // Test if it's valid JSON
+        return JSON.parse(content);
+    } catch (e) {
+        console.error('Failed to parse JSON:', e);
+        console.log('Content causing error:', content);
+        throw e;
+    }
+}
+
+
 /**
  * Wraps calls to the LLM that will call a well-typed tool and return
  * a well-typed response.
@@ -102,12 +126,7 @@ export async function llm<T>(
 			throw new Error('LLM did not return content to parse')
 		}
 
-		// some models like Deepseek return the json in a code block
-		if (content.includes('```json')) {
-			content = content.split('```json')[1]!.split('```')[0]
-		}
-
-		const contentObj = JSON.parse(content!)
+		const contentObj = cleanAndFormatJSON(content!)
 
 		verboseLog('\nRESPONSE:\n')
 		verboseLog(JSON.stringify(contentObj, null, 2))
