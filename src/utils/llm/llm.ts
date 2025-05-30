@@ -29,13 +29,17 @@ export async function llm<T>(
 	// break it up / clean it up.
 
 	const schema = SCHEMA(toolSchema.schema)
-	const isReallyOpenAI = MODEL?.toLowerCase().includes('gpt')
+	const isReallyOpenAI = MODEL?.toLowerCase().includes('gpt') 
 	const systemPromptWithSchema = `
 		${systemPrompt}
-		You must respond directly ONLY with a JSON object that is valid and matching this schema:
+		Você deve responder diretamente APENAS com um objeto JSON válido e que corresponda a este esquema:
 		${JSON.stringify(schema)}
 
-		DO NOT use markdown syntax or any other formatting.
+    IMPORTANTE:
+    - NÃO use sintaxe markdown ou qualquer outra formatação
+    - Garanta que todos os campos de texto estejam adequadamente escapados
+    - Não inclua quebras de linha nos campos de texto
+    - Use aspas duplas para todas as chaves e valores de string
 	`
 
 	console.log('isReallyOpenAI', isReallyOpenAI, 'prommpt', systemPromptWithSchema)
@@ -74,7 +78,7 @@ export async function llm<T>(
 			model: MODEL!,
 			temperature: 0.1,
 			max_completion_tokens: 4000,
-			tool_choice: isReallyOpenAI ? { type: 'function', function: { name: 'response' } } : undefined,
+			tool_choice: 'required',
 			tools: isReallyOpenAI
 				? [
 						{
