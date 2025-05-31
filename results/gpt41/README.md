@@ -25,18 +25,18 @@
 
 | Team | W-L | New Wins Against | New Losses Against |
 |------|-----|-----------------|------------------|
-| HEROIC | +3-0 | Complexity, FAZE | - |
+| HEROIC | +3-0 | FAZE, B8, Complexity | - |
 | Falcons | +3-0 | TYLOO, Imperial, Legacy | - |
-| B8 | +3-1 | 3DMAX, Virtus.pro, FURIA | - |
-| TYLOO | +3-1 | MIBR, paiN, FAZE | Falcons |
-| Legacy | +3-1 | Complexity, FURIA, paiN | Falcons |
-| NRG | +3-2 | Virtus.pro | 3DMAX, FAZE |
+| B8 | +3-1 | Virtus.pro, FURIA, 3DMAX | HEROIC |
+| TYLOO | +3-1 | paiN, MIBR, FAZE | Falcons |
+| Legacy | +3-1 | paiN, FURIA, Complexity | Falcons |
+| NRG | +3-2 | Virtus.pro, OG, Complexity | 3DMAX, FAZE |
 | FAZE | +3-2 | OG, NRG, Imperial | HEROIC, TYLOO |
 | FURIA | +3-2 | OG, Virtus.pro, 3DMAX | Legacy, B8 |
-| Complexity | +2-3 | MIBR, 3DMAX | HEROIC, Legacy |
-| Imperial | +2-3 | MIBR, M80 | Falcons, 3DMAX, FAZE |
+| Complexity | +2-3 | MIBR, 3DMAX | HEROIC, Legacy, NRG |
+| Imperial | +2-3 | M80, MIBR | Falcons, 3DMAX, FAZE |
 | 3DMAX | +2-3 | NRG, Imperial | Complexity, B8, FURIA |
-| OG | +1-3 | paiN | FURIA, FAZE |
+| OG | +1-3 | paiN | FURIA, FAZE, NRG |
 | Virtus.pro | +1-3 | M80 | B8, NRG, FURIA |
 | MIBR | +1-3 | M80 | Complexity, TYLOO, Imperial |
 | paiN | +0-3 | - | Legacy, TYLOO, OG |
@@ -48,31 +48,31 @@
 |------|-----|-----------------|------------------|
 | Vitality | +3-0 | Falcons, FAZE, The MongolZ | - |
 | Spirit | +3-0 | B8, Natus Vincere, MOUZ | - |
-| Falcons | +3-1 | Liquid, The MongolZ, FURIA | Vitality |
-| FAZE | +3-1 | B8, G2, Aurora | Vitality |
+| Falcons | +3-1 | FURIA, Liquid, The MongolZ | Vitality |
+| FAZE | +3-1 | Aurora, B8, G2 | Vitality |
 | Natus Vincere | +3-1 | FURIA, HEROIC, MOUZ | Spirit |
-| HEROIC | +3-2 | G2, TYLOO, Legacy | MOUZ, Natus Vincere |
+| HEROIC | +3-2 | TYLOO, Legacy, G2 | MOUZ, Natus Vincere |
 | MOUZ | +3-2 | HEROIC, Liquid, TYLOO | Spirit, Natus Vincere |
 | The MongolZ | +3-2 | TYLOO, G2, Aurora | Vitality, Falcons |
-| TYLOO | +2-3 | B8 | The MongolZ, MOUZ, HEROIC |
+| TYLOO | +2-3 | NRG, B8 | The MongolZ, HEROIC, MOUZ |
 | Aurora | +2-3 | NRG, Liquid | FAZE, G2, The MongolZ |
 | G2 | +2-3 | Legacy, Aurora | The MongolZ, FAZE, HEROIC |
-| B8 | +1-3 | Legacy | Spirit, TYLOO, FAZE |
-| Legacy | +1-3 | - | B8, G2, HEROIC |
+| B8 | +1-3 | Legacy | Spirit, FAZE, TYLOO |
+| Legacy | +1-3 | FURIA | G2, B8, HEROIC |
 | Liquid | +1-3 | NRG | MOUZ, Falcons, Aurora |
-| NRG | +0-3 | - | Liquid, Aurora |
-| FURIA | +0-3 | - | Falcons, Natus Vincere |
+| NRG | +0-3 | - | Liquid, Aurora, TYLOO |
+| FURIA | +0-3 | - | Natus Vincere, Falcons, Legacy |
 
 ### playoffs
 
 | Team | W-L | New Wins Against | New Losses Against |
 |------|-----|-----------------|------------------|
-| Vitality | +3-0 | Spirit, HEROIC | - |
-| Spirit | +2-1 | The MongolZ | Vitality |
-| Falcons | +1-1 | FAZE | - |
-| Natus Vincere | +1-1 | - | - |
+| Vitality | +3-0 | HEROIC, Falcons, Spirit | - |
+| Spirit | +2-1 | The MongolZ, Natus Vincere | Vitality |
+| Falcons | +1-1 | FAZE | Vitality |
+| Natus Vincere | +1-1 | MOUZ | Spirit |
 | HEROIC | +0-1 | - | Vitality |
 | FAZE | +0-1 | - | Falcons |
-| MOUZ | +0-1 | - | - |
+| MOUZ | +0-1 | - | Natus Vincere |
 | The MongolZ | +0-1 | - | Spirit |
 
