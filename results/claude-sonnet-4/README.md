@@ -39,30 +39,30 @@
 |------|-----|-----------------|------------------|
 | Vitality | +3-0 | HEROIC, 3DMAX, The MongolZ | - |
 | Spirit | +3-0 | TYLOO, Aurora, MOUZ | - |
-| HEROIC | +3-1 | The MongolZ, FAZE | Vitality |
+| HEROIC | +3-1 | FAZE, Legacy, The MongolZ | Vitality |
 | Natus Vincere | +3-1 | NRG, 3DMAX, TYLOO | MOUZ |
 | MOUZ | +3-1 | Legacy, Natus Vincere, NRG | Spirit |
-| TYLOO | +3-2 | BetBoom, B8, Aurora | Spirit, Natus Vincere |
-| Legacy | +3-2 | B8, 3DMAX, NRG | MOUZ |
+| TYLOO | +3-2 | BetBoom, Aurora, B8 | Spirit, Natus Vincere |
+| Legacy | +3-2 | B8, 3DMAX, NRG | MOUZ, HEROIC |
 | The MongolZ | +3-2 | B8, G2, BetBoom | Vitality, HEROIC |
-| B8 | +2-3 | G2, FAZE | The MongolZ, TYLOO, Legacy |
-| BetBoom | +2-3 | Liquid, Aurora | G2, The MongolZ, TYLOO |
-| NRG | +2-3 | G2, Liquid | MOUZ, Natus Vincere, Legacy |
+| B8 | +2-3 | FAZE, G2 | The MongolZ, Legacy, TYLOO |
+| BetBoom | +2-3 | Liquid, Aurora | G2, TYLOO, The MongolZ |
+| NRG | +2-3 | Liquid, G2 | Natus Vincere, MOUZ, Legacy |
 | 3DMAX | +1-3 | Liquid | Vitality, Natus Vincere, Legacy |
 | Aurora | +1-3 | FAZE | Spirit, TYLOO, BetBoom |
 | G2 | +1-3 | BetBoom | The MongolZ, NRG, B8 |
-| FAZE | +0-3 | - | B8, Aurora, HEROIC |
+| FAZE | +0-3 | - | Aurora, HEROIC, B8 |
 | Liquid | +0-3 | - | 3DMAX, NRG, BetBoom |
 
 ### playoffs
 
 | Team | W-L | New Wins Against | New Losses Against |
 |------|-----|-----------------|------------------|
-| Vitality | +3-0 | Spirit, Legacy | - |
-| Spirit | +2-1 | - | Vitality |
-| HEROIC | +1-1 | Natus Vincere | - |
-| MOUZ | +1-1 | The MongolZ | - |
-| TYLOO | +0-1 | - | - |
+| Vitality | +3-0 | Legacy, HEROIC, Spirit | - |
+| Spirit | +2-1 | TYLOO, MOUZ | Vitality |
+| HEROIC | +1-1 | Natus Vincere | Vitality |
+| MOUZ | +1-1 | The MongolZ | Spirit |
+| TYLOO | +0-1 | - | Spirit |
 | Legacy | +0-1 | - | Vitality |
 | Natus Vincere | +0-1 | - | HEROIC |
 | The MongolZ | +0-1 | - | MOUZ |
