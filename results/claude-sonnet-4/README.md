@@ -41,7 +41,7 @@
 | paiN | +1-3 | Virtus.pro | Legacy, MIBR, Chinggis Warriors |
 | M80 | +1-3 | Imperial | BetBoom, MIBR, 3DMAX |
 | Virtus.pro | +0-3 | - | BetBoom, B8, paiN |
-| Falcons | +-1-3 | - | HEROIC, Imperial, Chinggis Warriors |
+| Falcons | +1-3 | - | HEROIC, Imperial, Chinggis Warriors |
 
 ### stage3
 
