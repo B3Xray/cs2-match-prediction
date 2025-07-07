@@ -1,16 +1,39 @@
-# :gun: CS2 Pick-Em's LLM Bot
+# :gun: CS2 Match Prediction
 
-This is a fork of Steve Krenzel's [pick-ems](https://github.com/stevekrenzel/pick-ems) LLM agent built on top of OpenAI that predicts winners for CS2 games.
+This is A LLM Agent that predict the outcome of a professional Counter-Strike 2 match. It analyzes the recent news for each team and all the stats to give a precise prediction.
 
-The code was modified to predict specifically 2024 PGL Major Copenhagen games and therefore also tried to predict a winner of this championship.
+## Getting Started
 
-Each round of the competition is fed manually.
+To get started, you first need to clone the code and install the dependencies.
 
-## Additional features added from the fork
+```sh
+$ git clone git@github.com:luizcieslak/cs2-match-prediction.git
+$ cd cs2-match-prediction
+$ pnpm install
+```
 
-- [puppeteer-extra-plugin-stealth](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) required to scrape HLTV's website (🙏 thank you HLTV for letting us scrape your website, your content rocks and for decades it's been the go-to place everyone goes when we talk about Counter-Strike.)
-- Cached article analysis in JSON files (so my OpenAI billing doesn't skyrocket)
-- feeding back results in each round as another stat for the subsequent ones.
+Then create a `.env` file in the root of the project from `.env.example` file and tweak it to your needs.
+Notice the repo support LLMs besides OpenAI, as long as they are compatible with its API.
+
+Finally, on [src/repos/matches/repo.ts](https://github.com/luizcieslak/cs2-match-prediction/blob/a8001afd842a0698aaec327bc08ec7ce8dbdf811/src/repos/matches/repo.ts#L20), add the matches you want to predict in the following format: 
+
+```ts
+new Match(team1, team2, bestOf)
+```
+
+And then you can run the agent with:
+
+```
+$ npm run start
+```
+
+It may take several minutes to complete. It analyzes many articles and matches
+and each call to the LLM may take upwards of ~30 seconds to complete. So be
+patient.
+
+## Blast Austin 2025 Major Championship
+
+As a way of test its accuracy, I've used the [Blast Austin 2025 Major Championship](https://www.hltv.org/events/8436/blasttv-austin-major-2025-stage-1) and predicted its outcome using several LLM models. You can check the results [here](https://github.com/luizcieslak/cs2-match-prediction/blob/main/results/README.md).
 
 ## How Does It Work?
 
@@ -33,9 +56,10 @@ themselves to code due to their ambiguous or difficult-to-code nature.
 The scrapers know how to retrieve:
 
 - The articles mentioning a determined CS2 team. [Example for FaZe team](https://www.hltv.org/team/6667/faze#tab-newsBox)
-- Overview Stats for a CS2 team, from June 18th 2023 until now. [Example for NAVI team.](https://www.hltv.org/stats/teams/4608/natus-vincere?startDate=2023-06-18&endDate=2025-01-18)
-- Event history a CS2 team, from June 18th 2023 until now. [Example for NAVI team.](https://www.hltv.org/stats/teams/events/4608/natus-vincere?startDate=2023-06-18&endDate=2025-01-18)
-- Previous matchups between two teams, from June 18th 2023 until now. [Example for FaZe versus NAVI](https://www.hltv.org/results?startDate=2023-06-18&endDate=2025-06-18&team=6667&team=4608&requireAllTeams=)
+- Overview Stats for a CS2 team. [Example for NAVI team.](https://www.hltv.org/stats/teams/4608/natus-vincere)
+- Event history a CS2 team. [Example for NAVI team.](https://www.hltv.org/stats/teams/events/4608/natus-vincere)
+- Previous matchups between two teams. [Example for FaZe versus NAVI](https://www.hltv.org/results?startDate=2023-06-18&endDate=2025-06-18&team=6667&team=4608&requireAllTeams=)
+- Map Pool stats for a CS2 team. [Example for The MongolZ team.](https://www.hltv.org/stats/teams/maps/6248/the-mongolz)
 
 ## Agents
 
@@ -49,36 +73,23 @@ The agents know how to:
   Whenever we provide an article to the agent to summary, we also provide which is the team the agent needs to look for in order to provide the elements above.
 
 - **Predict a Winner**: Given both teams that are competing in PGL Major Championship Copenhagen 2024, the format of match they will perform
-  plus each teams Stats: KDA ratio, win rate, event history and matchup history
+  plus each teams Stats: KDA ratio, win rate, event history, matchup history, map pool stats
   along with any relevant news we can find for them
-  analyze that data to make a prediction about who will win.
-
-## Getting Started
-
-To get started, you first need to clone the code and install your dependencies.
-
-```sh
-$ git clone git@github.com:luizcieslak/pick-ems.git
-$ npm install
-```
-
-And then **update the `.env` file to have a valid OpenAI API key**.
-
-And then you can run the agent with:
-
-```
-$ npm run start
-```
-
-It may take several minutes to complete. It analyzes many articles and matches
-and each call to the LLM may take upwards of ~30 seconds to complete. So be
-patient.
+  analyze that data to make a prediction about who will win and also which maps will be played.
 
 ## Architectural Patterns
+
+This is heavily based on a fork of Steve Krenzel's [pick-ems](https://github.com/stevekrenzel/pick-ems) LLM agent that originally predicts winners for NFL games. The code was modified to handle CS2 games but most of the architecture is the same.
 
 There are a few key architectural patterns we use in this repo. One for data
 retrieval, one for working with LLMs, and one for managing the flow of data
 between the two.
+
+### Additional features added from the fork
+
+- [Patchright](https://github.com/Kaliiiiiiiiii-Vinyzu/patchright-nodejs) instead of the default Playwright is required to scrape HLTV's website (🙏 thank you HLTV for letting us scrape your website, your content rocks and for decades it's been the go-to place everyone goes when we talk about Counter-Strike.)
+- Cached article analysis in JSON files (so my OpenAI billing doesn't skyrocket)
+- feeding back results in each round as another stat for the subsequent ones.
 
 ### Data Access
 

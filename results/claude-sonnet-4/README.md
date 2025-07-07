@@ -2,36 +2,46 @@
 
 ### stage1
 
-*No new results for this stage*
+| Team | W-L | New Wins Against | New Losses Against |
+|------|-----|-----------------|------------------|
+| HEROIC | +3-0 | Chinggis Warriors, Legacy, TYLOO | - |
+| B8 | +3-0 | Imperial, OG, BetBoom | - |
+| BetBoom | +3-1 | Nemiga, FlyQuest, Wildcard | B8 |
+| TYLOO | +3-1 | NRG, Wildcard, OG | HEROIC |
+| Legacy | +3-1 | Lynn Vision, Fluxo, FlyQuest | HEROIC |
+| Chinggis Warriors | +3-2 | NRG, Metizport, FlyQuest | HEROIC, OG |
+| Imperial | +3-2 | Nemiga, Fluxo, OG | B8, Wildcard |
+| NRG | +3-2 | Complexity, Lynn Vision, Wildcard | TYLOO, Chinggis Warriors |
+| OG | +2-3 | Complexity, Chinggis Warriors | B8, TYLOO, Imperial |
+| Wildcard | +2-3 | Metizport, Imperial | TYLOO, BetBoom, NRG |
+| FlyQuest | +2-3 | Fluxo, Lynn Vision | BetBoom, Legacy, Chinggis Warriors |
+| Falcons | +1-0 | TYLOO | - |
+| Lynn Vision | +1-3 | Metizport | Legacy, NRG, FlyQuest |
+| Metizport | +1-3 | Nemiga | Wildcard, Lynn Vision, Chinggis Warriors |
+| Fluxo | +1-3 | Complexity | FlyQuest, Legacy, Imperial |
+| Complexity | +0-3 | - | OG, Fluxo, NRG |
+| Nemiga | +0-3 | - | BetBoom, Imperial, Metizport |
 
 ### stage2
 
 | Team | W-L | New Wins Against | New Losses Against |
 |------|-----|-----------------|------------------|
-| HEROIC | +6-0 | Chinggis Warriors, Legacy, TYLOO, Falcons, TYLOO, BetBoom | - |
-| B8 | +6-1 | Imperial, OG, BetBoom, Virtus.pro, FURIA, NRG | FAZE |
-| Legacy | +6-1 | Lynn Vision, Fluxo, FlyQuest, paiN, FURIA, FAZE | HEROIC |
-| BetBoom | +6-2 | Nemiga, FlyQuest, Wildcard, Virtus.pro, M80, FAZE | B8, HEROIC |
-| TYLOO | +6-2 | NRG, Wildcard, OG, 3DMAX, Imperial, MIBR | HEROIC, HEROIC |
-| Chinggis Warriors | +6-4 | NRG, Metizport, FlyQuest, Falcons, paiN, FAZE | HEROIC, OG, FURIA, 3DMAX |
-| NRG | +6-4 | Complexity, Lynn Vision, Wildcard, MIBR, 3DMAX, FURIA | TYLOO, Chinggis Warriors, FAZE, B8 |
-| Imperial | +4-5 | Nemiga, Fluxo, OG, Falcons | B8, Wildcard, M80, TYLOO, FURIA |
+| HEROIC | +3-0 | Falcons, TYLOO, BetBoom | - |
+| Legacy | +3-0 | paiN, FURIA, FAZE | - |
+| B8 | +3-1 | Virtus.pro, FURIA, NRG | FAZE |
+| BetBoom | +3-1 | Virtus.pro, M80, FAZE | HEROIC |
+| TYLOO | +3-1 | 3DMAX, Imperial, MIBR | HEROIC |
+| Chinggis Warriors | +3-2 | Falcons, paiN, FAZE | FURIA, 3DMAX |
+| NRG | +3-2 | MIBR, 3DMAX, FURIA | FAZE, B8 |
 | 3DMAX | +3-2 | Chinggis Warriors, M80, MIBR | TYLOO, NRG |
-| OG | +2-3 | Complexity, Chinggis Warriors | B8, TYLOO, Imperial |
-| Wildcard | +2-3 | Metizport, Imperial | TYLOO, BetBoom, NRG |
-| FlyQuest | +2-3 | Fluxo, Lynn Vision | BetBoom, Legacy, Chinggis Warriors |
 | FAZE | +2-3 | B8, NRG | Legacy, BetBoom, Chinggis Warriors |
 | FURIA | +2-3 | Chinggis Warriors, Imperial | Legacy, B8, NRG |
 | MIBR | +2-3 | paiN, M80 | NRG, TYLOO, 3DMAX |
-| Lynn Vision | +1-3 | Metizport | Legacy, FlyQuest, NRG |
-| Metizport | +1-3 | Nemiga | Wildcard, Lynn Vision, Chinggis Warriors |
-| Fluxo | +1-3 | Complexity | FlyQuest, Legacy, Imperial |
+| Imperial | +1-3 | Falcons | M80, TYLOO, FURIA |
 | paiN | +1-3 | Virtus.pro | Legacy, MIBR, Chinggis Warriors |
 | M80 | +1-3 | Imperial | BetBoom, MIBR, 3DMAX |
-| Complexity | +0-3 | - | OG, Fluxo, NRG |
-| Nemiga | +0-3 | - | BetBoom, Imperial, Metizport |
-| Falcons | +0-3 | - | HEROIC, Imperial, Chinggis Warriors |
 | Virtus.pro | +0-3 | - | BetBoom, B8, paiN |
+| Falcons | +-1-3 | - | HEROIC, Imperial, Chinggis Warriors |
 
 ### stage3
 

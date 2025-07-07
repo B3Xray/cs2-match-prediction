@@ -12,7 +12,7 @@
 | B8 | +3-2 | Imperial, Legacy, OG | HEROIC, NRG |
 | Imperial | +3-2 | Lynn Vision, Nemiga, Wildcard | B8, Complexity |
 | Fluxo | +3-2 | FlyQuest, Complexity, Lynn Vision | TYLOO, Legacy |
-| OG | +3-3 | Complexity, Chinggis Warriors, Metizport | Complexity, FlyQuest, B8 |
+| OG | +2-3 | Chinggis Warriors, Metizport | Complexity, FlyQuest, B8 |
 | Lynn Vision | +2-3 | BetBoom, Nemiga | Legacy, Imperial, Fluxo |
 | Wildcard | +2-3 | Chinggis Warriors, FlyQuest | Metizport, Complexity, Imperial |
 | Falcons | +1-0 | TYLOO | - |
