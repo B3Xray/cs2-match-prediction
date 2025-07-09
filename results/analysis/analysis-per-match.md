@@ -3,7 +3,7 @@
 ## deepseek-chat
 
 ### stage1
-Accuracy: 27.27% (9/33 matches)
+Accuracy: 60.00% (9/15 matches)
 
 Correct Predictions:
 - TYLOO vs Complexity
@@ -25,7 +25,7 @@ Wrong Predictions:
 - Imperial vs Nemiga (actual: Nemiga)
 
 ### stage2
-Accuracy: 9.09% (3/33 matches)
+Accuracy: 30.00% (3/10 matches)
 
 Correct Predictions:
 - HEROIC vs TYLOO
@@ -42,7 +42,7 @@ Wrong Predictions:
 - Falcons vs B8 (actual: B8)
 
 ### stage3
-Accuracy: 3.03% (1/33 matches)
+Accuracy: 16.67% (1/6 matches)
 
 Correct Predictions:
 - The MongolZ vs G2
@@ -55,7 +55,7 @@ Wrong Predictions:
 - G2 vs 3DMAX (actual: 3DMAX)
 
 ### playoffs
-Accuracy: 10.53% (4/38 matches)
+Accuracy: 40.00% (4/10 matches)
 
 Correct Predictions:
 - MOUZ vs Aurora
@@ -76,7 +76,7 @@ Wrong Predictions:
 ## sabia3
 
 ### stage1
-Accuracy: 33.33% (11/33 matches)
+Accuracy: 78.57% (11/14 matches)
 
 Correct Predictions:
 - FlyQuest vs Fluxo
@@ -97,7 +97,7 @@ Wrong Predictions:
 - BetBoom vs FlyQuest (actual: FlyQuest)
 
 ### stage2
-Accuracy: 15.15% (5/33 matches)
+Accuracy: 50.00% (5/10 matches)
 
 Correct Predictions:
 - TYLOO vs M80
@@ -114,7 +114,7 @@ Wrong Predictions:
 - Complexity vs TYLOO (actual: TYLOO)
 
 ### stage3
-Accuracy: 15.15% (5/33 matches)
+Accuracy: 55.56% (5/9 matches)
 
 Correct Predictions:
 - HEROIC vs TYLOO
@@ -137,7 +137,7 @@ Accuracy: 0.00% (0/0 matches)
 ## gpt41
 
 ### stage1
-Accuracy: 12.12% (4/33 matches)
+Accuracy: 26.67% (4/15 matches)
 
 Correct Predictions:
 - B8 vs Imperial
@@ -159,7 +159,7 @@ Wrong Predictions:
 - Lynn Vision vs Nemiga (actual: Nemiga)
 
 ### stage2
-Accuracy: 3.03% (1/33 matches)
+Accuracy: 14.29% (1/7 matches)
 
 Correct Predictions:
 - NRG vs Complexity
@@ -173,7 +173,7 @@ Wrong Predictions:
 - TYLOO vs FAZE (actual: FAZE)
 
 ### stage3
-Accuracy: 15.15% (5/33 matches)
+Accuracy: 71.43% (5/7 matches)
 
 Correct Predictions:
 - G2 vs Aurora
@@ -187,7 +187,7 @@ Wrong Predictions:
 - FAZE vs Aurora (actual: Aurora)
 
 ### playoffs
-Accuracy: 14.29% (1/7 matches)
+Accuracy: 100.00% (1/1 matches)
 
 Correct Predictions:
 - Spirit vs Natus Vincere
@@ -200,7 +200,7 @@ Correct Predictions:
 Accuracy: 0.00% (0/0 matches)
 
 ### stage2
-Accuracy: 16.92% (11/65 matches)
+Accuracy: 50.00% (11/22 matches)
 
 Correct Predictions:
 - HEROIC vs TYLOO
@@ -229,7 +229,7 @@ Wrong Predictions:
 - Imperial vs Nemiga (actual: Nemiga)
 
 ### stage3
-Accuracy: 17.53% (17/97 matches)
+Accuracy: 58.62% (17/29 matches)
 
 Correct Predictions:
 - HEROIC vs TYLOO
@@ -265,7 +265,7 @@ Wrong Predictions:
 - Imperial vs Nemiga (actual: Nemiga)
 
 ### playoffs
-Accuracy: 0.00% (0/7 matches)
+Accuracy: 0.00% (0/2 matches)
 
 Wrong Predictions:
 - Vitality vs Legacy (actual: Legacy)
@@ -276,7 +276,7 @@ Wrong Predictions:
 ## claude-opus-4
 
 ### stage1
-Accuracy: 11.76% (4/34 matches)
+Accuracy: 33.33% (4/12 matches)
 
 Correct Predictions:
 - HEROIC vs Chinggis Warriors
@@ -295,7 +295,7 @@ Wrong Predictions:
 - Lynn Vision vs Nemiga (actual: Nemiga)
 
 ### stage2
-Accuracy: 9.38% (3/32 matches)
+Accuracy: 37.50% (3/8 matches)
 
 Correct Predictions:
 - Legacy vs 3DMAX
@@ -310,7 +310,7 @@ Wrong Predictions:
 - paiN vs Virtus.pro (actual: Virtus.pro)
 
 ### stage3
-Accuracy: 12.12% (4/33 matches)
+Accuracy: 100.00% (4/4 matches)
 
 Correct Predictions:
 - HEROIC vs TYLOO
@@ -319,7 +319,7 @@ Correct Predictions:
 - Legacy vs Imperial
 
 ### playoffs
-Accuracy: 28.57% (2/7 matches)
+Accuracy: 100.00% (2/2 matches)
 
 Correct Predictions:
 - Vitality vs MOUZ
@@ -327,26 +327,10 @@ Correct Predictions:
 
 ---
 
-## stats
-
-### stage1
-Accuracy: 0.00% (0/0 matches)
-
-### stage2
-Accuracy: 0.00% (0/0 matches)
-
-### stage3
-Accuracy: 0.00% (0/0 matches)
-
-### playoffs
-Accuracy: 0.00% (0/0 matches)
-
----
-
 ## gpt-o4-mini
 
 ### stage1
-Accuracy: 24.24% (8/33 matches)
+Accuracy: 66.67% (8/12 matches)
 
 Correct Predictions:
 - HEROIC vs Chinggis Warriors
@@ -365,7 +349,7 @@ Wrong Predictions:
 - Nemiga vs BetBoom (actual: BetBoom)
 
 ### stage2
-Accuracy: 3.03% (1/33 matches)
+Accuracy: 20.00% (1/5 matches)
 
 Correct Predictions:
 - NRG vs TYLOO
@@ -377,7 +361,7 @@ Wrong Predictions:
 - HEROIC vs B8 (actual: B8)
 
 ### stage3
-Accuracy: 9.09% (3/33 matches)
+Accuracy: 37.50% (3/8 matches)
 
 Correct Predictions:
 - Vitality vs 3DMAX
@@ -392,7 +376,7 @@ Wrong Predictions:
 - NRG vs HEROIC (actual: HEROIC)
 
 ### playoffs
-Accuracy: 13.51% (5/37 matches)
+Accuracy: 50.00% (5/10 matches)
 
 Correct Predictions:
 - Natus Vincere vs G2
