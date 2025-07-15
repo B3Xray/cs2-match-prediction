@@ -28,7 +28,8 @@ export async function predictWinner(match: Match): Promise<string> {
 		articles,
 		matchHistory,
 		championshipStats,
-		stage: 'challenger',
+		major: CONFIG.MATCH.MAJOR,
+		stage: CONFIG.MATCH.STAGE,
 	})
 	const response = await llm(systemPrompt, match, SCHEMA)
 

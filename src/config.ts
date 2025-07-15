@@ -45,6 +45,21 @@ const argv = yargs(hideBin(process.argv))
 		requiresArg: true,
 		demandOption: false,
 	})
+	.option('major', {
+		type: 'boolean',
+		requiresArg: false,
+		demandOption: false,
+		description: 'Whether the match is in the Major Championship context',
+		default: true,
+	})
+	.option('stage', {
+		type: 'string',
+		choices: ['stage1', 'stage2', 'stage3', 'playoffs'],
+		requiresArg: true,
+		demandOption: false,
+		description: 'The stage of the match, if major option is true',
+		default: 'stage1',
+	})
 	.parseSync()
 
 function throwRequiredEnvVar(name: string): never {
@@ -63,5 +78,7 @@ export const CONFIG = {
 		HOME: argv.home,
 		AWAY: argv.away,
 		BESTOF: argv.bestof as '1' | '3' | '5' | undefined,
+		MAJOR: argv.major,
+		STAGE: argv.stage as 'stage1' | 'stage2' | 'stage3' | 'playoffs',
 	},
 }
