@@ -12,8 +12,6 @@ import { toMarkdown, appendTable } from '../../utils'
 
 type Stage = 'stage1' | 'stage2' | 'stage3' | 'playoffs'
 
-const maps = ['Ancient', 'Anubis', 'Dust2', 'Inferno', 'Mirage', 'Nuke', 'Train']
-
 const stageDescription: Record<Stage, string> = {
 	stage1:
 		'16 teams face each other in a Swiss format. The top 8 teams are classified to the next stage and the bottom 8 are eliminated. Elimination and advancements matches are in a Best of 3 format where the others are in a Best of 1 format.',
@@ -38,6 +36,7 @@ interface SystemPromptArgs {
 	matchHistory: MatchHistory[]
 	championshipStats: ChampionshipStats[]
 	stage: Stage
+	major: boolean
 }
 
 export const SYSTEM_PROMPT = ({
@@ -47,12 +46,17 @@ export const SYSTEM_PROMPT = ({
 	matchHistory,
 	championshipStats,
 	stage,
+	major,
 }: SystemPromptArgs) => `
-You are an expert at choosing winning Counter-Strike teams in a "pick ems" competition. The teams are playing in a championship called "Blast Austin CS2 Major Championship". This championship is divided in three stages: Challenger, Legends and Playoffs. We currently are in the ${stage} stage in which ${
-	stageDescription[stage]
-} This is going to be a Best of ${
-	match.bestOf
-}. In Counter-Strike competitive matches we have first a maps Picks and Bans phase, where the teams with their coach will ${
+You are an expert at choosing winning Counter-Strike teams in a "pick ems" competition.
+
+The teams are playing in a championship called "Blast Austin CS2 Major Championship". This championship is divided in three stages: Challenger, Legends and Playoffs. 
+
+${major && stage ? `We currently are in the ${stage} stage in which ${stageDescription[stage]}` : ''}.
+
+This is going to be a Best of ${match.bestOf}.
+
+In Counter-Strike competitive matches we have first a maps Picks and Bans phase, where the teams with their coach will ${
 	picksBansDescription[match.bestOf]
 }. The highest seed team (classified as 'home' in the input) will be able to start the picks and bans phase first and therefore has an advantage. Notice that this is a high-level competition, so the teams knows in advance their opponent and will study their performance on them.
 

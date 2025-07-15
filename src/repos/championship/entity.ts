@@ -15,11 +15,11 @@ export class ChampionshipStats {
 	 */
 	constructor(public team: string, public stat: ChampionshipStat) {}
 
-	// /**
-	//  * Convert the stats to a table.
-	//  *
-	//  * @returns {Table} The stats as a table.
-	//  */
+	/**
+	 * Convert the stats to a table.
+	 *
+	 * @returns {Table} The stats as a table.
+	 */
 	public toTable(): Table {
 		const headers: string[] = ['Team']
 		const body: string[] = [this.team]

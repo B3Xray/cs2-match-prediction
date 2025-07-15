@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       dotenv:
         specifier: ^16.3.1
         version: 16.5.0
@@ -15,14 +18,11 @@ importers:
         specifier: ^4.24.7
         version: 4.100.0
       patchright:
-        specifier: ^1.52.3
-        version: 1.52.3
+        specifier: ^1.52.5
+        version: 1.52.5
       playwright:
         specifier: ^1.42.1
         version: 1.52.0
-      playwright-extra:
-        specifier: ^4.3.6
-        version: 4.3.6(playwright-core@1.52.0)(playwright@1.52.0)
       tslib:
         specifier: ^2.5.0
         version: 2.8.1
@@ -164,6 +164,9 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
+
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
   debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -453,13 +456,13 @@ packages:
       zod:
         optional: true
 
-  patchright-core@1.52.3:
-    resolution: {integrity: sha512-vTGjtGGR0VEZPujPd/2Xfq4uFIE1Rrz5pFwApwyrbyPILERLhzRXwR9MwtIQw4infpoPhF4QAd8qisB9znrTMg==}
+  patchright-core@1.52.5:
+    resolution: {integrity: sha512-8rnLVEK9jDZWzFPy2hCQrp4xhU7zgE8IqseZyjGkgxf+jpAWTuGNgIAlcsKZMfQrDL8j1mZgRIGNAQT00nk6QA==}
     engines: {node: '>=18'}
     hasBin: true
 
-  patchright@1.52.3:
-    resolution: {integrity: sha512-hi4MhiUrAFIS0CQH8tcHaRwWIhgK+B9Kz74pp95Mn/MJQHPTGLRYlNiJCxjcfxF3qDNhO1lrxDORKfRPvd45MA==}
+  patchright@1.52.5:
+    resolution: {integrity: sha512-wmRpsF9n02j0S+YDk0U3ouuWipHbUowwxbf/4K4G9ng311vvugoo8WndbU/fCsGtme8gYNfcEGcpfF6/L1NXHg==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -484,18 +487,6 @@ packages:
     resolution: {integrity: sha512-l2osTgLXSMeuLZOML9qYODUQoPPnUsKsb5/P6LJ2e6uPKXUdPK5WYhN4z03G+YNbWmGDY4YENauNu4ZKczreHg==}
     engines: {node: '>=18'}
     hasBin: true
-
-  playwright-extra@4.3.6:
-    resolution: {integrity: sha512-q2rVtcE8V8K3vPVF1zny4pvwZveHLH8KBuVU2MoE3Jw4OKVoBWsHI9CH9zPydovHHOCDxjGN2Vg+2m644q3ijA==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      playwright: '*'
-      playwright-core: '*'
-    peerDependenciesMeta:
-      playwright:
-        optional: true
-      playwright-core:
-        optional: true
 
   playwright@1.52.0:
     resolution: {integrity: sha512-JAwMNMBlxJ2oD1kce4KPtMkDeKGHQstdpFPcPH3maElAXon/QZeTvtsfXmTMRyO9TslfoYOXkSsvao2nE1ilTw==}
@@ -765,6 +756,8 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
+  dayjs@1.11.13: {}
+
   debug@4.3.4:
     dependencies:
       ms: 2.1.2
@@ -1030,11 +1023,11 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  patchright-core@1.52.3: {}
+  patchright-core@1.52.5: {}
 
-  patchright@1.52.3:
+  patchright@1.52.5:
     dependencies:
-      patchright-core: 1.52.3
+      patchright-core: 1.52.5
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -1047,15 +1040,6 @@ snapshots:
   pidtree@0.6.0: {}
 
   playwright-core@1.52.0: {}
-
-  playwright-extra@4.3.6(playwright-core@1.52.0)(playwright@1.52.0):
-    dependencies:
-      debug: 4.4.1(supports-color@5.5.0)
-    optionalDependencies:
-      playwright: 1.52.0
-      playwright-core: 1.52.0
-    transitivePeerDependencies:
-      - supports-color
 
   playwright@1.52.0:
     dependencies:

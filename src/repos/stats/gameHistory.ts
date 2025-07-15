@@ -7,7 +7,7 @@ export interface MatchHistory {
 	Event: string
 }
 
-// this should be inside a class like the other toTable
+// TODO: this should be inside a class like the other toTable
 export function toTable(matchHistory: MatchHistory[]): Table {
 	const headers: string[] = ['Higher seed team', 'Lower seed team', 'Winner of the match', 'Event']
 	const body: string[][] = []

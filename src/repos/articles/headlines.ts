@@ -92,20 +92,4 @@ export async function getTeamHeadlines(team: string, limit = 10): Promise<HLTVAr
 	return result
 		.map(anchor => ({ url: new URL(anchor.href || '', BASE_URL_SEARCH), title: anchor.title }))
 		.slice(0, limit)
-
-	// also to decrease the change of rate limit,
-	// the cached article should be return before accessing the page.
-
-	// try also to cache stats? only the ones that won't change as team stats, world ranking and event history
 }
-
-// /**
-//  * Crawls the search page for HLTV news for a team in specific and grabs the URLs for each headline.
-//  */
-// export async function getTeamsHeadlineUrls(teams: string[], limit = 1): Promise<URL[]> {
-// 	if (!teams[0] || !teams[1]) return []
-// 	const team0 = await getTeamHeadlineUrls(teams[0], limit)
-// 	const team1 = await getTeamHeadlineUrls(teams[1], limit)
-
-// 	return [...team0, ...team1]
-// }

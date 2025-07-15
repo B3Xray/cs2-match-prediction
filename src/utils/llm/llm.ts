@@ -6,7 +6,7 @@ import { verboseLog } from '../../utils'
 
 config()
 
-const API_KEY = process.env.OPENAI_API_KEY
+const API_KEY = process.env.MODEL_API_KEY
 const BASE_URL = process.env.BASE_URL
 const MODEL = process.env.MODEL
 
@@ -25,9 +25,7 @@ export async function llm<T>(
 	userPrompt: any,
 	toolSchema: { schema: JSONSchema; type: T }
 ): Promise<T> {
-	// TODO: There is a lot going on this function. We should
-	// break it up / clean it up.
-
+	// TODO: There is a lot going on this function. We should break it up / clean it up.
 	const schema = SCHEMA(toolSchema.schema)
 	const isReallyOpenAI = MODEL?.toLowerCase().includes('gpt')
 	const systemPromptWithSchema = `
@@ -37,8 +35,8 @@ export async function llm<T>(
 
 		DO NOT use markdown syntax or any other formatting.
 	`
-
 	console.log('isReallyOpenAI', isReallyOpenAI, 'prommpt', systemPromptWithSchema)
+
 
 	verboseLog('=============================================')
 	verboseLog('Starting request to LLM:')

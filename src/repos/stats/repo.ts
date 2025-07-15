@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 import { CONFIG } from '../../config'
 import { fileExists, navigateTo, verboseLog } from '../../utils'
 import { TeamStats, TeamStatType as StatType, TeamStatType } from './entity'
@@ -55,11 +57,12 @@ export class TeamStatsRepo {
 		const matchingTeam = teamLinks.find(t => t.name.toLowerCase() === team.toLowerCase())
 		if (!matchingTeam?.href) return null
 
+		const endDate = dayjs()
+		const startDate = endDate.subtract(6, 'month')
 		const statPage = `https://www.hltv.org/stats/teams${matchingTeam.href.replace(
 			'/team',
 			''
-			// TODO: add date-fns, now to 6 months ago
-		)}?startDate=2024-06-18&endDate=2025-06-18`
+		)}?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`
 
 		return statPage
 	}
@@ -103,16 +106,17 @@ export class TeamStatsRepo {
 			const kdRatioString = await kdRatio.textContent()
 
 			if (wdlString && kdRatioString) {
-				const [wins, draw, losses] = wdlString?.split(' / ').map(s => parseInt(s))
-				// @ts-ignore handle error on these later
-				const total = wins + draw + losses
-				teamStat = new TeamStats(team, type, {
-					// @ts-ignore handle error on these later
-					'Win rate': `${(wins / total) * 100}%`,
-					// wins, draw, losses,
-					'Kill death ratio': kdRatioString,
-				})
-				saveStat(teamStat)
+				const values = wdlString.split(' / ').map(s => parseInt(s))
+
+				if (values.length === 3 && values.every(v => !isNaN(v))) {
+					const [wins, draws, losses] = values
+					const total = wins! + draws! + losses!
+					teamStat = new TeamStats(team, type, {
+						'Win rate': `${(wins! / total) * 100}%`,
+						'Kill death ratio': kdRatioString,
+					})
+					saveStat(teamStat)
+				}
 			}
 
 			return teamStat
@@ -242,9 +246,10 @@ export class TeamStatsRepo {
 	private async getTeamsMatchHistory(team0Id: string, team1Id: string): Promise<MatchHistory[]> {
 		const BASE_URL_RESULTS = 'https://www.hltv.org/results'
 		const url = new URL(BASE_URL_RESULTS)
-		// TODO: add date-fns, now to 6 months ago
-		url.searchParams.append('startDate', '2024-06-18')
-		url.searchParams.append('endDate', '2025-06-18')
+		const endDate = dayjs()
+		const startDate = endDate.subtract(6, 'month')
+		url.searchParams.append('startDate', startDate.format('YYYY-MM-DD'))
+		url.searchParams.append('endDate', endDate.format('YYYY-MM-DD'))
 		url.searchParams.append('requireAllTeams', '')
 		url.searchParams.append('team', team0Id)
 		url.searchParams.append('team', team1Id)

@@ -1,3 +1,4 @@
+import { CONFIG } from '../../config'
 import { Match } from './entity'
 
 /**
@@ -16,34 +17,15 @@ export class MatchRepo {
 	 */
 	public async list(): Promise<Match[]> {
 		if (MatchRepo.matches == null) {
-			MatchRepo.matches = [
-				// new Match('Complexity', 'OG', '1'),
-				// new Match('HEROIC', 'Chinggis Warriors', '1'),
-				// new Match('B8', 'Imperial', '1'),
-				// new Match('BetBoom', 'Nemiga', '1'),
-				// new Match('TYLOO', 'NRG', '1'),
-				// new Match('Lynn Vision', 'Legacy', '1'),
-				// new Match('Wildcard', 'Metizport', '1'),
-				// new Match('FlyQuest', 'Fluxo', '1'),
-
-				new Match('B8', 'BetBoom', '3'),
-				new Match('Fluxo', 'HEROIC', '3'),
-				new Match('TYLOO', 'Legacy', '1'),
-				new Match('Lynn Vision', 'NRG', '1'),
-				new Match('Complexity', 'Imperial', '1'),
-				new Match('Wildcard', 'FlyQuest', '1'),
-				new Match('Chinggis Warriors', 'Metizport', '3'),
-				new Match('Nemiga', 'OG', '3'),
-
-				// new Match('Falcons', 'FAZE', '1'),
-				// new Match('3DMAX', 'Virtus.pro', '1'),
-				// new Match('FURIA', 'MIBR', '1'),
-				// new Match('paiN', 'M80', '1'),
-				// new Match('Aurora', 'G2', '1'),
-				// new Match('Natus Vincere', 'Liquid', '1'),
-				// new Match('Vitality', 'MOUZ', '1'),
-				// new Match('Spirit', 'The MongolZ', '1'),
-			]
+			// Only use CLI arguments if ALL match parameters are provided
+			if (CONFIG.MATCH.HOME && CONFIG.MATCH.AWAY && CONFIG.MATCH.BESTOF) {
+				MatchRepo.matches = [new Match(CONFIG.MATCH.HOME, CONFIG.MATCH.AWAY, CONFIG.MATCH.BESTOF)]
+			} else {
+				MatchRepo.matches = [
+					// Manually add matches here if the CLI arguments are not provided, example:
+					// new Match('FaZe', 'Spirit', '3')
+				]
+			}
 		}
 		return MatchRepo.matches
 	}
