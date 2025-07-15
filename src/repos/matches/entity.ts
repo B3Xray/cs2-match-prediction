@@ -26,7 +26,6 @@ export class Match {
 	 *
 	 * @returns {Promise<Article[]>} The list of articles for the week associated with the given teams.
 	 */
-	// 1) fetch the articles associated with the given teams in the match
 	public async articles(): Promise<Article[]> {
 		const teams = [this.away, this.home]
 		verboseLog('Fetching articles for teams', teams)

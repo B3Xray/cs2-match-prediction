@@ -25,9 +25,7 @@ export async function llm<T>(
 	userPrompt: any,
 	toolSchema: { schema: JSONSchema; type: T }
 ): Promise<T> {
-	// TODO: There is a lot going on this function. We should
-	// break it up / clean it up.
-
+	// TODO: There is a lot going on this function. We should break it up / clean it up.
 	verboseLog('=============================================')
 	verboseLog('Starting request to LLM:')
 	verboseLog('\nSYSTEM:\n', systemPrompt)

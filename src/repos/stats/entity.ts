@@ -21,11 +21,11 @@ export class TeamStats {
 	 */
 	constructor(public team: string, public type: TeamStatType, public stats: { [stat: string]: string }) {}
 
-	// /**
-	//  * Convert the stats to a table.
-	//  *
-	//  * @returns {Table} The stats as a table.
-	//  */
+	/**
+	 * Convert the stats to a table.
+	 *
+	 * @returns {Table} The stats as a table.
+	 */
 	public toTable(): Table {
 		const headers: string[] = ['Team']
 		const body: string[] = [this.team]
