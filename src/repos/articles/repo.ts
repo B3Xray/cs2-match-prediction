@@ -15,7 +15,7 @@ const ARTICLE_CONTENT = '.newstext-con p'
  * A repository for retrieving Articles related to recent NFL events.
  */
 export class ArticleRepo {
-	// Cached list of articles for the week.
+	// Cached list of articles
 	private static articles: Article[] = []
 
 	/**
@@ -24,7 +24,6 @@ export class ArticleRepo {
 	 * @param teams The list of teams to filter by.
 	 * @returns {Promise<Article[]>} The list of articles for the week associated with the given teams.
 	 */
-
 	public async findByTeams(teams: string[]): Promise<Article[]> {
 		// check if there's already articles for these teams
 		const i = ArticleRepo.articles.findIndex(article => teams.includes(article.primaryTeam))
@@ -33,7 +32,6 @@ export class ArticleRepo {
 		}
 
 		const articles = await this.fetchFromMatchTeams(teams)
-		// 6) filter the articles by the team in the match.
 		return articles.filter(article => teams.includes(article.primaryTeam))
 	}
 
@@ -44,7 +42,6 @@ export class ArticleRepo {
 	 * @returns {Promise<Article[]>} The list of articles for current headlines.
 	 */
 	private async fetchFromMatchTeams(teams: string[]): Promise<Article[]> {
-		// 3) in homepage, get a list of URLs
 		if (teams.length < 2) throw new Error('Not enough Teams in fetchFromMatchTeams')
 
 		if (CONFIG.CACHE && !CONFIG.LOOK_FOR_NEW_ARTICLES) {
@@ -89,7 +86,6 @@ export class ArticleRepo {
 		// NOTE: We explicitly use a for-loop instead of `Promise.all` here because
 		// we want to force sequential execution (instead of parallel) because these are
 		// all sharing the same browser instance.
-
 		for (const article of team0List) {
 			try {
 				const result = await this.fetchOne(article, teams[0]!)
