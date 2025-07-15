@@ -52,9 +52,8 @@
 	"dependencies": {
 		"dotenv": "^16.3.1",
 		"openai": "^4.24.7",
-		"patchright": "^1.52.3",
+		"patchright": "^1.52.5",
 		"playwright": "^1.42.1",
-		"playwright-extra": "^4.3.6",
 		"tslib": "^2.5.0",
 		"yargs": "^17.7.2"
 	}
