@@ -26,6 +26,25 @@ const argv = yargs(hideBin(process.argv))
 		description: 'Whether to fetch the list of articles from a team',
 		default: false,
 	})
+	.option('home', {
+		type: 'string',
+		description: 'Home team name (higher seed, picks first in picks/bans and chooses the side of first map)',
+		requiresArg: true,
+		demandOption: false,
+	})
+	.option('away', {
+		type: 'string',
+		description: 'Away team name (lower seed, picks second in picks/bans)',
+		requiresArg: true,
+		demandOption: false,
+	})
+	.option('bestof', {
+		type: 'string',
+		choices: ['1', '3', '5'],
+		description: 'Best of X games',
+		requiresArg: true,
+		demandOption: false,
+	})
 	.parseSync()
 
 function throwRequiredEnvVar(name: string): never {
@@ -40,10 +59,9 @@ export const CONFIG = {
 	VERBOSE: argv.verbose,
 	CACHE: argv.cache,
 	LOOK_FOR_NEW_ARTICLES: argv.lookForNewArticles,
-}
-
-console.log(CONFIG)
-// Fail loudly if the OPENAI_API_KEY is still the default value
-if (CONFIG.OPENAI_API_KEY === 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx') {
-	throw new Error('Please set the OPENAI_API_KEY in your .env file to a non-default value.')
+	MATCH: {
+		HOME: argv.home,
+		AWAY: argv.away,
+		BESTOF: argv.bestof as '1' | '3' | '5' | undefined,
+	},
 }

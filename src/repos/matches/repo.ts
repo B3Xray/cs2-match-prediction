@@ -1,3 +1,4 @@
+import { CONFIG } from '../../config'
 import { Match } from './entity'
 
 /**
@@ -16,12 +17,15 @@ export class MatchRepo {
 	 */
 	public async list(): Promise<Match[]> {
 		if (MatchRepo.matches == null) {
-			MatchRepo.matches = [
-				new Match('FaZe', 'Spirit', '5'),
-				// new Match('Spirit', 'Vitality', '3'),
-				// new Match('Spirit', 'Vitality', '3'),
-				// new Match('Spirit', 'Vitality', '3'),
-			]
+			// Only use CLI arguments if ALL match parameters are provided
+			if (CONFIG.MATCH.HOME && CONFIG.MATCH.AWAY && CONFIG.MATCH.BESTOF) {
+				MatchRepo.matches = [new Match(CONFIG.MATCH.HOME, CONFIG.MATCH.AWAY, CONFIG.MATCH.BESTOF)]
+			} else {
+				MatchRepo.matches = [
+					// Manually add matches here if the CLI arguments are not provided, example:
+					// new Match('FaZe', 'Spirit', '3')
+				]
+			}
 		}
 		return MatchRepo.matches
 	}
