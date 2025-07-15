@@ -1,14 +1,13 @@
 import OpenAI from 'openai'
-import { config } from 'dotenv'
 import { JSONSchema } from 'json-schema-to-ts'
 import { SCHEMA } from './schema'
 import { verboseLog } from '../../utils'
+import { CONFIG } from '../../config'
 
-config()
-
-const API_KEY = process.env.MODEL_API_KEY
-const BASE_URL = process.env.BASE_URL
-const MODEL = process.env.MODEL
+const API_KEY = CONFIG.MODEL_API_KEY
+const BASE_URL = CONFIG.BASE_URL
+const MODEL = CONFIG.MODEL
+const IS_REASONING_MODEL = CONFIG.IS_REASONING_MODEL
 
 const openai = new OpenAI({
 	apiKey: API_KEY,
@@ -27,6 +26,11 @@ export async function llm<T>(
 ): Promise<T> {
 	// TODO: There is a lot going on this function. We should break it up / clean it up.
 	const schema = SCHEMA(toolSchema.schema)
+
+	// Compatibility issues with OpenAI API
+	// Most of the LLM models claim they have "OpenAI API Comaptibility" but some or most
+	// of the params might not work for them. So we need to peform some checking here
+	// Also the IS_REASONING_MODEL var from env helps to determine the right API call.
 	const isReallyOpenAI = MODEL?.toLowerCase().includes('gpt')
 	const systemPromptWithSchema = `
 		${systemPrompt}
@@ -35,12 +39,10 @@ export async function llm<T>(
 
 		DO NOT use markdown syntax or any other formatting.
 	`
-	console.log('isReallyOpenAI', isReallyOpenAI, 'prommpt', systemPromptWithSchema)
-
 
 	verboseLog('=============================================')
 	verboseLog('Starting request to LLM:')
-	// verboseLog('\nSYSTEM:\n', systemPrompt)
+	verboseLog('\nSYSTEM:\n', isReallyOpenAI ? systemPrompt : systemPromptWithSchema)
 	verboseLog('\nUSER:\n', JSON.stringify(userPrompt))
 
 	// We wrap the provided schema in a parent schema that forces
@@ -70,7 +72,7 @@ export async function llm<T>(
 				},
 			],
 			model: MODEL!,
-			temperature: 0.1,
+			temperature: IS_REASONING_MODEL ? 1 : 0.1,
 			max_completion_tokens: 4000,
 			tool_choice: isReallyOpenAI ? { type: 'function', function: { name: 'response' } } : undefined,
 			tools: isReallyOpenAI
