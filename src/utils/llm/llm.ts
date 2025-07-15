@@ -6,7 +6,7 @@ import { verboseLog } from '../../utils'
 
 config()
 
-const API_KEY = process.env.OPENAI_API_KEY
+const API_KEY = process.env.MODEL_API_KEY
 const BASE_URL = process.env.BASE_URL
 const MODEL = process.env.MODEL
 

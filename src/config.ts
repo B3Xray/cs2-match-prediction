@@ -67,7 +67,7 @@ function throwRequiredEnvVar(name: string): never {
 }
 
 export const CONFIG = {
-	OPENAI_API_KEY: process.env.OPENAI_API_KEY || throwRequiredEnvVar('OPENAI_API_KEY'),
+	MODEL_API_KEY: process.env.MODEL_API_KEY || throwRequiredEnvVar('MODEL_API_KEY'),
 	BASE_URL: process.env.BASE_URL || throwRequiredEnvVar('BASE_URL'),
 	MODEL: process.env.MODEL || throwRequiredEnvVar('MODEL'),
 	HEADLESS: argv.headless,
