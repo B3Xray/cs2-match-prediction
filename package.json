@@ -1,7 +1,7 @@
 {
-	"name": "pick-ems",
-	"version": "0.0.1",
-	"description": "An LLM-powered agent that chooses CS2 teams in a pick'ems pool.",
+	"name": "cs2-match-prediction",
+	"version": "0.0.2",
+	"description": "An LLM-powered agent that predicts the outcome of a professional Counter-Strike 2 match.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
@@ -18,28 +18,31 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/luizcieslak/pick-ems.git"
+		"url": "git+https://github.com/luizcieslak/cs2-match-prediction.git"
 	},
 	"files": [
 		"dist/src/**/*",
 		"readme.md"
 	],
 	"keywords": [
+		"counter-strike",
+		"cs2",
+		"match prediction",
 		"llm",
 		"large language model",
 		"pickems",
 		"gpt-4",
 		"openai"
 	],
-	"author": "Steve Krenzel",
+	"author": "Luiz Cieslak",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/luizcieslak/pick-ems/issues"
+		"url": "https://github.com/luizcieslak/cs2-match-prediction/issues"
 	},
 	"lint-staged": {
 		"*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern"
 	},
-	"homepage": "https://github.com/luizcieslak/pick-ems#readme",
+	"homepage": "https://github.com/luizcieslak/cs2-match-prediction#readme",
 	"devDependencies": {
 		"@types/yargs": "^17.0.33",
 		"json-schema-to-ts": "^3.0.0",
