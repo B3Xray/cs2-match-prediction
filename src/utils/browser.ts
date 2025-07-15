@@ -7,7 +7,7 @@ let PAGE_SINGLETON: Page | null = null
 let BROWSER_SINGLETON: Browser | null = null
 let CONTEXT_SINGLETON: BrowserContext | null = null
 // Toggle this to true if accepting cookies or logging in is something necessary to scrape.
-let FIRST_TIME: boolean = true
+let NEED_ACCEPT_COOKIES_AND_SIGN_IN: boolean = false
 
 const authFile = 'playwright/.auth/user.json'
 
@@ -107,10 +107,10 @@ export async function navigateTo(url: string, waitForVisible: string): Promise<L
 	// Add a random delay of 1 to 10 seconds to simulate human behavior
 	await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 10000)))
 
-	if (FIRST_TIME) {
+	if (NEED_ACCEPT_COOKIES_AND_SIGN_IN) {
 		verboseLog('First time navigating, accepting cookies and logging in.')
 		await logInOnce(url)
-		FIRST_TIME = false
+		NEED_ACCEPT_COOKIES_AND_SIGN_IN = false
 	}
 
 	const page = await getBrowserInstance()
