@@ -103,16 +103,17 @@ export class TeamStatsRepo {
 			const kdRatioString = await kdRatio.textContent()
 
 			if (wdlString && kdRatioString) {
-				const [wins, draw, losses] = wdlString?.split(' / ').map(s => parseInt(s))
-				// @ts-ignore handle error on these later
-				const total = wins + draw + losses
-				teamStat = new TeamStats(team, type, {
-					// @ts-ignore handle error on these later
-					'Win rate': `${(wins / total) * 100}%`,
-					// wins, draw, losses,
-					'Kill death ratio': kdRatioString,
-				})
-				saveStat(teamStat)
+				const values = wdlString.split(' / ').map(s => parseInt(s))
+
+				if (values.length === 3 && values.every(v => !isNaN(v))) {
+					const [wins, draws, losses] = values
+					const total = wins! + draws! + losses!
+					teamStat = new TeamStats(team, type, {
+						'Win rate': `${(wins! / total) * 100}%`,
+						'Kill death ratio': kdRatioString,
+					})
+					saveStat(teamStat)
+				}
 			}
 
 			return teamStat
