@@ -36,13 +36,6 @@ export async function getBrowserInstance(): Promise<Page> {
 	const context = await browser.newContext()
 	const page = await context.newPage()
 
-	// Set custom headers
-	// await page.setExtraHTTPHeaders({
-	// 	'User-Agent':
-	// 		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-	// 	'Accept-Language': 'en-US,en;q=0.9',
-	// })
-
 	PAGE_SINGLETON = page
 	BROWSER_SINGLETON = browser
 	CONTEXT_SINGLETON = context
@@ -71,6 +64,7 @@ export async function closeBrowser(): Promise<void> {
 
 export async function acceptCookies(url: string) {
 	const browser = await getBrowserInstance()
+	await browser.context().clearCookies()
 	await browser.goto(url)
 
 	// accept cookies
@@ -81,10 +75,6 @@ export async function acceptCookies(url: string) {
 export async function logInOnce(url: string) {
 	const browser = await getBrowserInstance()
 	await browser.goto(url)
-
-	// accept cookies
-	const allowAllCookies = browser.locator('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll')
-	await allowAllCookies.click()
 
 	// log in
 	const signin = browser.locator('.navsignin')
@@ -108,19 +98,21 @@ export async function logInOnce(url: string) {
  * @returns {Promise<Locator>} The locator for the given selector.
  */
 export async function navigateTo(url: string, waitForVisible: string): Promise<Locator> {
-	// it seems neither of these functions are necessary anymore, skipping.
+	// Add a random delay of 1 to 10 seconds to simulate human behavior
+	await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 10000)))
+
 	if (FIRST_TIME) {
 		verboseLog('First time navigating, accepting cookies and logging in.')
-		await acceptCookies(url)
-		// await logInOnce(url)
+		await logInOnce(url)
 		FIRST_TIME = false
 	}
 
-	const browser = await getBrowserInstance()
-	await browser.goto(url)
+	const page = await getBrowserInstance()
+	await page.context().storageState({ path: authFile })
 
-	const container = browser.locator(waitForVisible)
-	// await container.waitFor({ state: 'visible' })
+	await page.goto(url)
+
+	const container = page.locator(waitForVisible)
 
 	return container
 }
