@@ -70,6 +70,7 @@ export const CONFIG = {
 	MODEL_API_KEY: process.env.MODEL_API_KEY || throwRequiredEnvVar('MODEL_API_KEY'),
 	BASE_URL: process.env.BASE_URL || throwRequiredEnvVar('BASE_URL'),
 	MODEL: process.env.MODEL || throwRequiredEnvVar('MODEL'),
+	IS_REASONING_MODEL: process.env.IS_REASONING_MODEL === 'true',
 	HEADLESS: argv.headless,
 	VERBOSE: argv.verbose,
 	CACHE: argv.cache,
