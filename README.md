@@ -13,9 +13,18 @@ $ pnpm install
 ```
 
 Then create a `.env` file in the root of the project from `.env.example` file and tweak it to your needs.
-Notice the repo support LLMs besides OpenAI, as long as they are compatible with its API.
+There's support for models besides OpenAI ones, as long as they are compatible with its API.
 
-Finally, on [src/repos/matches/repo.ts](https://github.com/luizcieslak/cs2-match-prediction/blob/a8001afd842a0698aaec327bc08ec7ce8dbdf811/src/repos/matches/repo.ts#L20), add the matches you want to predict in the following format: 
+You can run a match analysis with the following:
+
+```
+pnpm run start --home Vitality --away Legacy --bestof 1
+
+```
+
+To see all the available config options from the CLI, run `pnpm run start --help`.
+
+Or if you want to run several match predicts on batch, on [src/repos/matches/repo.ts](https://github.com/luizcieslak/cs2-match-prediction/blob/a8001afd842a0698aaec327bc08ec7ce8dbdf811/src/repos/matches/repo.ts), add the matches you want to predict in the following format:
 
 ```ts
 new Match(team1, team2, bestOf)
@@ -31,9 +40,11 @@ It may take several minutes to complete. It analyzes many articles and matches
 and each call to the LLM may take upwards of ~30 seconds to complete. So be
 patient.
 
-## Blast Austin 2025 Major Championship
+## Blast Austin 2025 Major Championship Results
 
 As a way of test its accuracy, I've used the [Blast Austin 2025 Major Championship](https://www.hltv.org/events/8436/blasttv-austin-major-2025-stage-1) and predicted its outcome using several LLM models. You can check the results [here](https://github.com/luizcieslak/cs2-match-prediction/blob/main/results/README.md).
+
+It's current accuracy is **58.3% in the championship stage advancements**, and around **65% in the individual matches happened in the major championship**.
 
 ## How Does It Work?
 
@@ -72,10 +83,7 @@ The agents know how to:
 
   Whenever we provide an article to the agent to summary, we also provide which is the team the agent needs to look for in order to provide the elements above.
 
-- **Predict a Winner**: Given both teams that are competing in PGL Major Championship Copenhagen 2024, the format of match they will perform
-  plus each teams Stats: KDA ratio, win rate, event history, matchup history, map pool stats
-  along with any relevant news we can find for them
-  analyze that data to make a prediction about who will win and also which maps will be played.
+- **Predict a Winner**: Given both teams that are playing against each other (in a championship context if provided), the amount of maps they will play plus each teams Stats: KDA ratio, win rate, event history, matchup history, map pool stats along with any relevant news we can find for them, analyze all this data to make a prediction about who will win and also which maps will be played.
 
 ## Architectural Patterns
 
