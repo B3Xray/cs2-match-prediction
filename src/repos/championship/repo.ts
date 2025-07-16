@@ -15,8 +15,6 @@ export interface ChampionshipStat {
  * A repository for retrieving the current championship stats for a given team.
  */
 export class ChampionshipRepo {
-	// private static championshipStat: ChampionshipStats
-
 	private async getTeamResults(team: string): Promise<ChampionshipStats | undefined> {
 		const championshipPath = path.join(__filename, '../../../../', 'championship-cached/')
 		const filename = `${team}.json`
