@@ -5,12 +5,12 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"postinstall": "cp -n .env.example .env && npm run add-hooks && npx playwright install",
+		"postinstall": "npm run add-hooks && npx playwright install",
 		"test": "npm run clean && npm run build",
 		"watch": "npx nodemon --watch src --watch test -e js,ts -x 'npm run test'",
 		"build": "npm run clean && npx tsc",
 		"start": "npm run build && node dist/index.js",
-		"clean": "rm -rf dist",
+		"clean": "if exist dist rmdir /s /q dist",
 		"format": "npx prettier --write --ignore-unknown .",
 		"check-format": "npx prettier --check --ignore-unknown .",
 		"add-hooks": "git config core.hooksPath .githooks",
@@ -44,6 +44,7 @@
 	},
 	"homepage": "https://github.com/luizcieslak/cs2-match-prediction#readme",
 	"devDependencies": {
+		"@types/node": "^24.5.2",
 		"@types/yargs": "^17.0.33",
 		"json-schema-to-ts": "^3.0.0",
 		"lint-staged": "^13.2.2",
@@ -59,6 +60,8 @@
 		"patchright": "^1.52.5",
 		"playwright": "^1.42.1",
 		"tslib": "^2.5.0",
-		"yargs": "^17.7.2"
+		"yargs": "^17.7.2",
+		"zod": "^3.23.8",
+		"zod-to-json-schema": "^3.24.6"
 	}
 }

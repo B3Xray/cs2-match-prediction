@@ -1,26 +1,13 @@
-/**
- * A news article related to a sports team.
- *
- * @remarks A news article may mention multiple teams,
- * but we associate it with what we determine to be the
- * singular primary team discussed in the article.
- */
+import { Team } from '../teams';
+
 export class Article {
-	/**
-	 * Creates a new instance of an Article.
-	 *
-	 * @param title The title of the article.
-	 * @param content The content of the article.
-	 * @param summary The summary of the article.
-	 * @param url The URL of the article.
-	 * @param primaryTeam The primary team discussed in the article.
-	 * @returns A new instance of Article.
-	 */
-	constructor(
-		public title: string,
-		// public content: string,
-		public summary: string,
-		// public url: URL,
-		public primaryTeam: string
-	) {}
+  constructor(
+    public readonly title: string,
+    public readonly content: string,
+    public readonly team: Team,
+  ) {}
+
+  public toString(): string {
+    return `Title: ${this.title}\n${this.content}`;
+  }
 }

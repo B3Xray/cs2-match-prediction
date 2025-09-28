@@ -1,20 +1,23 @@
-import { Table } from 'utils'
+import { Table } from '../../utils/tables';
 
-export interface MatchHistory {
-	'Higher seed team': string
-	'Lower seed team': string
-	'Winner of the match': string
-	Event: string
-}
+export type GameHistory = {
+  date: string;
+  event: string;
+  bestOf: number;
+  team1: { name: string; score: number };
+  team2: { name: string; score: number };
+};
 
-// TODO: this should be inside a class like the other toTable
-export function toTable(matchHistory: MatchHistory[]): Table {
-	const headers: string[] = ['Higher seed team', 'Lower seed team', 'Winner of the match', 'Event']
-	const body: string[][] = []
-
-	for (const history of matchHistory) {
-		body.push(Object.values(history) as string[])
-	}
-
-	return { headers, body: body }
-}
+export const toTable = (history: GameHistory[]): Table => {
+  const headers = ['Date', 'Event', 'Best Of', 'Team 1', 'Score', 'Team 2', 'Score'];
+  const body = history.map(h => [
+    h.date,
+    h.event,
+    h.bestOf.toString(),
+    h.team1.name,
+    h.team1.score.toString(),
+    h.team2.name,
+    h.team2.score.toString(),
+  ]);
+  return { headers, body };
+};

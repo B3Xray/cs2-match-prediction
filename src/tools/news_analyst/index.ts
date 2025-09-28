@@ -1,1 +1,1 @@
-export { newsAnalyst, NewsAnalysis } from './tool'
+export { analyze as newsAnalyst, Analysis as NewsAnalysis } from './tool'

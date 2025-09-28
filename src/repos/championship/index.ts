@@ -1,2 +1,2 @@
-export { ChampionshipStats } from './entity'
-export { ChampionshipRepo, ChampionshipStat } from './repo'
+export { Championship, Standing } from './entity';
+export { ChampionshipRepo } from './repo';

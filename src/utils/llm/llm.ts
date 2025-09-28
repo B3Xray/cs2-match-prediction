@@ -1,116 +1,108 @@
-import OpenAI from 'openai'
-import { JSONSchema } from 'json-schema-to-ts'
-import { SCHEMA } from './schema'
-import { verboseLog } from '../../utils'
-import { CONFIG } from '../../config'
-
-const API_KEY = CONFIG.MODEL_API_KEY
-const BASE_URL = CONFIG.BASE_URL
-const MODEL = CONFIG.MODEL
-const IS_REASONING_MODEL = CONFIG.IS_REASONING_MODEL
+import { OpenAI } from 'openai';
+import { z } from 'zod';
+import { CONFIG } from '../../config';
+import { withAnalysis } from './schema';
+import { verboseLog } from '../log';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 const openai = new OpenAI({
-	apiKey: API_KEY,
-	baseURL: BASE_URL,
-})
+  apiKey: CONFIG.MODEL_API_KEY,
+  baseURL: CONFIG.BASE_URL,
+});
 
-/**
- * Wraps calls to the LLM that will call a well-typed tool and return
- * a well-typed response.
- *
- */
-export async function llm<T>(
-	systemPrompt: string,
-	userPrompt: any,
-	toolSchema: { schema: JSONSchema; type: T }
-): Promise<T> {
-	// TODO: There is a lot going on this function. We should break it up / clean it up.
-	const schema = SCHEMA(toolSchema.schema)
+export const llm = async <T extends z.ZodObject<any, any, any>>(
+  prompt: string,
+  schema: T,
+  retries = 3,
+  timeout = 120_000,
+): Promise<z.infer<T>> => {
+  const S = withAnalysis(schema);
+  const fnName = 'extract';
 
-	// Compatibility issues with OpenAI API
-	// Most of the LLM models claim they have "OpenAI API Comaptibility" but some or most
-	// of the params might not work for them. So we need to peform some checking here
-	// Also the IS_REASONING_MODEL var from env helps to determine the right API call.
-	const isReallyOpenAI = MODEL?.toLowerCase().includes('gpt')
-	const systemPromptWithSchema = `
-		${systemPrompt}
-		You must respond directly ONLY with a JSON object that is valid and matching this schema:
-		${JSON.stringify(schema)}
+  for (let i = 0; i < retries; i++) {
+    try {
+      if (CONFIG.MODEL_PROVIDER === 'google') {
+        const url = `${CONFIG.BASE_URL}/models/${CONFIG.MODEL}:generateContent?key=${CONFIG.MODEL_API_KEY}`;
+        const jsonSchema = zodToJsonSchema(S);
 
-		DO NOT use markdown syntax or any other formatting.
-	`
+        const body = {
+          contents: [{ parts: [{ text: prompt }] }],
+          tools: [
+            {
+              functionDeclarations: [
+                {
+                  name: fnName,
+                  description: 'Extracts the relevant information from the text.',
+                  parameters: jsonSchema,
+                },
+              ],
+            },
+          ],
+          toolConfig: {
+            functionCallingConfig: {
+              mode: 'ANY',
+              allowedFunctionNames: [fnName],
+            },
+          },
+        };
 
-	verboseLog('=============================================')
-	verboseLog('Starting request to LLM:')
-	verboseLog('\nSYSTEM:\n', isReallyOpenAI ? systemPrompt : systemPromptWithSchema)
-	verboseLog('\nUSER:\n', JSON.stringify(userPrompt))
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+          signal: AbortSignal.timeout(timeout),
+        });
 
-	// We wrap the provided schema in a parent schema that forces
-	// the LLM to think and perform analysis before generating tool
-	// parameters. If we don't do this, and you ask the LLM to, for
-	// example, generate a boolean – it will just generate a boolean
-	// without putting a lot of thought into that boolean. Even if
-	// your prompt uses Chain-of-Thought or similar techniques.
-	//
-	// By forcing the first parameter the LLM generates to be
-	// that analysis, we can ensure that the LLM will not just jump
-	// right into generating the tool parameters, but will also
-	// write down thoughts in a scratchpad (of sorts) about it first.
-	try {
-		const schema = SCHEMA(toolSchema.schema) as any
-		const response = await openai.chat.completions.create({
-			messages: [
-				{
-					role: 'system',
-					content: systemPrompt,
-				},
-				{
-					role: 'user',
-					content: JSON.stringify(userPrompt),
-				},
-			],
-			model: MODEL!,
-			temperature: IS_REASONING_MODEL ? 1 : 0.1,
-			max_completion_tokens: 4000,
-			tool_choice: isReallyOpenAI ? { type: 'function', function: { name: 'response' } } : undefined,
-			tools: isReallyOpenAI
-				? [
-						{
-							type: 'function',
-							function: {
-								name: 'response',
-								description: "The JSON response to the user's inquiry.",
-								parameters: schema,
-							},
-						},
-				  ]
-				: undefined,
-		})
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Gemini API error: ${response.status} ${errorText}`);
+        }
 
-		// TODO: Do better validation on the response.
-		const content = response.choices[0]?.message?.tool_calls![0]?.function.arguments
+        const data: any = await response.json();
 
-		if (content == null) {
-			throw new Error('LLM did not return arguments to parse')
-		}
+        if (!data.candidates || !data.candidates[0].content.parts[0].functionCall) {
+          throw new Error('Invalid response structure from Gemini API');
+        }
 
-		const contentObj = JSON.parse(content)
+        const functionCall = data.candidates[0].content.parts[0].functionCall;
+        if (functionCall.name === fnName) {
+          const parsed = S.parse(functionCall.args);
+          return parsed.conclusion as z.infer<T>;
+        } else {
+          throw new Error('Unexpected function call response from Gemini API');
+        }
+      } else {
+        const completion = await openai.chat.completions.create(
+          {
+            model: CONFIG.MODEL,
+            messages: [{ role: 'user', content: prompt }],
+            tools: [
+              {
+                type: 'function',
+                function: { name: fnName, parameters: zodToJsonSchema(S) as any },
+              },
+            ],
+            tool_choice: {
+              type: 'function',
+              function: { name: fnName },
+            },
+            temperature: 0.2,
+          },
+          { timeout },
+        );
 
-		verboseLog('\nRESPONSE:\n')
-		verboseLog(JSON.stringify(contentObj, null, 2))
-		verboseLog('=============================================')
+        const data = completion.choices[0].message!.tool_calls![0].function.arguments;
+        verboseLog(`LLM completion:\n${data}`);
+        const parsed = S.parse(JSON.parse(data));
+        return parsed.conclusion as z.infer<T>;
+      }
+    } catch (e) {
+      verboseLog(`LLM error: ${e}`);
+      if (i === retries - 1) throw e;
+    }
+  }
 
-		let conclusion = contentObj.conclusion
-		// Edge case: LLM sometimes might not provide the conclusion required and it will return
-		// an string instead of a object requested in the schema.
-		if (typeof conclusion === 'string') {
-			console.warn('LLM did not return the requested schema', conclusion)
-			return { summary: conclusion, analysis: contentObj.analysis } as T
-		}
-
-		return { ...contentObj.conclusion, analysis: contentObj.analysis } as T
-	} catch (error) {
-		console.error('LLM error', error)
-		throw error
-	}
-}
+  throw new Error('LLM call failed after multiple retries');
+};

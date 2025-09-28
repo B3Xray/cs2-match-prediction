@@ -1,40 +1,13 @@
-import { Table } from '../../utils'
+import { Team } from '../teams';
+import { GameHistory } from './gameHistory';
 
-export enum TeamStatType {
-	TEAM_STATS = 'Team Stats',
-	WORLD_RANKING = 'World ranking',
-	EVENT_HISTORY = 'Event History',
-	MAP_POOL = 'Map Pool',
-}
+export type TeamStatType = 'Team Stats' | 'Event History' | 'Match History' | 'Map Pool' | 'World ranking';
 
-/**
- * A collection of a given type of stats for a team.
- */
-export class TeamStats {
-	/**
-	 * Creates a new instance of TeamStats.
-	 *
-	 * @param team The team the stats are for.
-	 * @param type The type of stats. (e.g. Offense, Defense, Turnover, Special Teams)
-	 * @param stats A dict of stats for the given team and type. (e.g. { "Total Passing Yards": "4,000" , "Total Games": "16" })
-	 * @returns A new instance of TeamStats.
-	 */
-	constructor(public team: string, public type: TeamStatType, public stats: { [stat: string]: string }) {}
-
-	/**
-	 * Convert the stats to a table.
-	 *
-	 * @returns {Table} The stats as a table.
-	 */
-	public toTable(): Table {
-		const headers: string[] = ['Team']
-		const body: string[] = [this.team]
-
-		for (const stat of Object.keys(this.stats)) {
-			headers.push(stat)
-			body.push(this.stats[stat]!)
-		}
-
-		return { headers, body: [body] }
-	}
-}
+export type TeamStats = {
+  team: Team;
+  teamstats: { [key: string]: string };
+  eventhistory: GameHistory[];
+  matchhistory: GameHistory[];
+  mappool: { [key: string]: string };
+  worldranking: string;
+};

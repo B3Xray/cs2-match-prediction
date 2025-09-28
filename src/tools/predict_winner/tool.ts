@@ -1,100 +1,45 @@
-import * as fs from 'fs/promises'
-import * as path from 'path'
-import { fileExists, llm, verboseLog } from '../../utils'
-import { SYSTEM_PROMPT } from './prompt'
-import { SCHEMA } from './schema'
-import { ChampionshipStat, Match } from '../../repos'
-import { CONFIG } from '../../config'
+import { llm } from '../../utils/llm';
+import { PredictWinnerPrompt } from './prompt';
+import { SCHEMA } from './schema';
+import { Match } from '../../repos/matches';
+import { ChampionshipRepo } from '../../repos/championship';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+import { CONFIG } from '../../config';
 
-let winners = ''
+export const predictWinner = async (match: Match) => {
+  const championship = await new ChampionshipRepo().load();
 
-/**
- * Predict the winner of a match.
- *
- * @param match The match to predict the winner of.
- * @returns The name of the winning team.
- */
-export async function predictWinner(match: Match): Promise<string> {
-	const stats = await match.stats()
-	const matchHistory = await match.matchHistory()
-	const championshipStats = await match.championshipStats()
-	const articles = await match.articles()
+  const homeTeamStats = await match.home.stats(match);
+  const awayTeamStats = await match.away.stats(match);
 
-	verboseLog('predicting winner for', match.home, match.away)
-	const systemPrompt = SYSTEM_PROMPT({
-		stats,
-		match,
-		articles,
-		matchHistory,
-		championshipStats,
-		major: CONFIG.MATCH.MAJOR,
-		stage: CONFIG.MATCH.STAGE,
-	})
-	const response = await llm(systemPrompt, match, SCHEMA)
+  const systemPrompt = PredictWinnerPrompt({
+    home: homeTeamStats,
+    away: awayTeamStats,
+    match,
+    championship,
+  });
 
-	if (CONFIG.CACHE) {
-		const matchesPath = path.join(__filename, '../../../../', 'matches-cached/')
-		const filename = `${match.home}-${match.away}.json`
-		const filePath = path.join(matchesPath, filename)
-		await fs.mkdir(matchesPath, { recursive: true })
-		await fs.writeFile(filePath, JSON.stringify(response), 'utf-8')
+  const response = await llm(systemPrompt, SCHEMA);
 
-		const championshipPath = path.join(__filename, '../../../../', 'championship-cached/')
-		await fs.mkdir(championshipPath, { recursive: true })
-		const winTeamFile = `${response.winningTeam}.json`
-		const winTeamPath = path.join(championshipPath, winTeamFile)
-		const winnerStatExists = await fileExists(winTeamPath)
-		if (winnerStatExists) {
-			const file = await fs.readFile(winTeamPath, 'utf-8')
-			const stat = JSON.parse(file) as ChampionshipStat
+  const matchesPath = path.join(__dirname, '../../../../', 'matches-cached/');
+  await fs.mkdir(matchesPath, { recursive: true });
+  const matchPath = path.join(matchesPath, `${match.home.name}-${match.away.name}.json`);
+  await fs.writeFile(matchPath, JSON.stringify(response, null, 2));
 
-			stat.wins += 1
+  const championshipPath = path.join(__dirname, '../../../../', 'championship-cached/');
+  await fs.mkdir(championshipPath, { recursive: true });
 
-			if (stat['win over'] === '') {
-				stat['win over'] = response.losingTeam
-			} else {
-				stat['win over'] += `, ${response.losingTeam}`
-			}
+  const winnerPath = path.join(championshipPath, `${response.winningTeam}.json`);
+  const loserPath = path.join(championshipPath, `${response.losingTeam}.json`);
 
-			await fs.writeFile(winTeamPath, JSON.stringify(stat), 'utf-8')
-		} else {
-			const stat: ChampionshipStat = {
-				wins: 1,
-				losses: 0,
-				'win over': response.losingTeam,
-				'loss over': '',
-			}
-			await fs.writeFile(winTeamPath, JSON.stringify(stat), 'utf-8')
-		}
+  const winnerData = JSON.parse(await fs.readFile(winnerPath, 'utf-8'));
+  winnerData.wins++;
+  await fs.writeFile(winnerPath, JSON.stringify(winnerData, null, 2));
 
-		const loserTeamFile = `${response.losingTeam}.json`
-		const loserTeamPath = path.join(championshipPath, loserTeamFile)
-		const loserStatExists = await fileExists(loserTeamPath)
-		if (loserStatExists) {
-			const file = await fs.readFile(loserTeamPath, 'utf-8')
-			const stat = JSON.parse(file) as ChampionshipStat
+  const loserData = JSON.parse(await fs.readFile(loserPath, 'utf-8'));
+  loserData.losses++;
+  await fs.writeFile(loserPath, JSON.stringify(loserData, null, 2));
 
-			stat.losses += 1
-
-			if (stat['loss over'] === '') {
-				stat['loss over'] = response.winningTeam
-			} else {
-				stat['loss over'] += `, ${response.winningTeam}`
-			}
-			await fs.writeFile(loserTeamPath, JSON.stringify(stat), 'utf-8')
-		} else {
-			const stat: ChampionshipStat = {
-				wins: 0,
-				losses: 1,
-				'win over': '',
-				'loss over': response.winningTeam,
-			}
-			await fs.writeFile(loserTeamPath, JSON.stringify(stat), 'utf-8')
-		}
-	}
-
-	winners += ` ${response.winningTeam} -`
-	verboseLog('WINNERS', winners)
-
-	return response.winningTeam
-}
+  return response;
+};

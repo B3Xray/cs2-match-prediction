@@ -1,16 +1,15 @@
-import { closeBrowser } from './utils'
-import { predictWinner } from './tools'
-import { Match, MatchRepo } from './repos'
-;(async () => {
-	// Get all of the game matches for this week
-	const matches = await new MatchRepo().list()
+import { MatchRepo } from './repos/matches';
+import { predictWinner } from './tools';
+import { ChampionshipRepo } from './repos/championship';
 
-	// Predict the winner of each match
-	for (const match of matches) {
-		const winner = await predictWinner(match)
-		console.log(`${match.away} vs. ${match.home}: ${winner}`)
-	}
-
-	// Close up shop
-	await closeBrowser()
-})()
+(async () => {
+  let match;
+  while ((match = await MatchRepo.findNext())) {
+    const winner = await predictWinner(match);
+    await new ChampionshipRepo().update(winner);
+    console.log(`Prediction for ${match.home.name} vs ${match.away.name}: Winner is ${winner.winningTeam}`);
+  }
+})().catch(e => {
+  console.error(e);
+  process.exit(1);
+});

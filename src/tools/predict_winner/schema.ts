@@ -1,25 +1,7 @@
-import type { FromSchema, JSONSchema } from 'json-schema-to-ts'
+import { z } from 'zod';
 
-const DEFINITION = {
-	type: 'object',
-	properties: {
-		winningTeam: {
-			type: 'string',
-			description: 'The name of the winning team.',
-		},
-		losingTeam: {
-			type: 'string',
-			description: 'The name of the losing team.',
-		},
-		analysis: {
-			type: 'string',
-			description: 'Analysis done by LLM',
-		},
-	},
-	required: ['winningTeam', 'losingTeam', 'analysis'],
-} as const satisfies JSONSchema
-
-export const SCHEMA = {
-	schema: DEFINITION,
-	type: {} as FromSchema<typeof DEFINITION>,
-}
+export const SCHEMA = z.object({
+  winningTeam: z.string().describe('The name of the winning team.'),
+  losingTeam: z.string().describe('The name of the losing team.'),
+  mapPrediction: z.string().describe('The predicted map scores, e.g., 2-1.'),
+});

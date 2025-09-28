@@ -1,46 +1,44 @@
-import { ChampionshipStats, ChampionshipStats as StatType } from './entity'
+import * as fs from 'fs/promises';
+import * as path from 'path';
+import { Championship, Standing } from './entity';
+import { TeamRepo } from '../teams';
+import { Stage } from '../../tools/predict_winner/prompt';
 
-import * as fs from 'fs/promises'
-import * as path from 'path'
-import { fileExists, verboseLog } from '../../utils'
-
-export interface ChampionshipStat {
-	wins: number
-	losses: number
-	'win over': string
-	'loss over': string
-}
-
-/**
- * A repository for retrieving the current championship stats for a given team.
- */
 export class ChampionshipRepo {
-	private async getTeamResults(team: string): Promise<ChampionshipStats | undefined> {
-		const championshipPath = path.join(__filename, '../../../../', 'championship-cached/')
-		const filename = `${team}.json`
-		const filePath = path.join(championshipPath, filename)
+  private getPath(stage: Stage) {
+    return path.join(__dirname, `../../../../championship-cached/${stage}.json`);
+  }
 
-		const statAlreadyExists = await fileExists(filePath)
+  public async load(stage: Stage = 'stage1'): Promise<Championship> {
+    try {
+      const data = await fs.readFile(this.getPath(stage), 'utf-8');
+      const parsed = JSON.parse(data);
+      const standings = parsed.standings.map((s: any) => ({
+        team: new TeamRepo().find(s.team),
+        wins: s.wins,
+        losses: s.losses,
+      }));
+      return new Championship(stage, standings);
+    } catch {
+      return new Championship(stage, []);
+    }
+  }
 
-		if (statAlreadyExists) {
-			const file = await fs.readFile(filePath, 'utf-8')
-			verboseLog('returning cached results for', team)
-			const stat = JSON.parse(file) as ChampionshipStat
-			return new ChampionshipStats(team, stat)
-		}
+  public async update(winner: { winningTeam: string; losingTeam: string }, stage: Stage = 'stage1') {
+    const championship = await this.load(stage);
+    const winnerStanding = championship.standings.find(s => s.team.name === winner.winningTeam);
+    if (winnerStanding) {
+      winnerStanding.wins++;
+    } else {
+      championship.standings.push({ team: new TeamRepo().find(winner.winningTeam), wins: 1, losses: 0 });
+    }
 
-		return
-	}
-
-	public async findTeamsResults(teams: string[]): Promise<ChampionshipStats[]> {
-		const team0Stats = await this.getTeamResults(teams[0]!)
-		const team1Stats = await this.getTeamResults(teams[1]!)
-
-		let championshipTeamResults = []
-
-		if (team0Stats) championshipTeamResults.push(team0Stats)
-		if (team1Stats) championshipTeamResults.push(team1Stats)
-
-		return championshipTeamResults
-	}
+    const loserStanding = championship.standings.find(s => s.team.name === winner.losingTeam);
+    if (loserStanding) {
+      loserStanding.losses++;
+    } else {
+      championship.standings.push({ team: new TeamRepo().find(winner.losingTeam), wins: 0, losses: 1 });
+    }
+    await fs.writeFile(this.getPath(stage), JSON.stringify(championship, null, 2));
+  }
 }

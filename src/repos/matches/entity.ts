@@ -1,85 +1,25 @@
-import { ChampionshipRepo, ChampionshipStats } from '../championship'
-import { ArticleRepo, Article } from '../articles'
-import { TeamStatsRepo, TeamStats, TeamStatType, MatchHistory } from '../stats'
-import { verboseLog } from '../../utils'
+import { Team, TeamRepo } from '../teams';
+import { Article, ArticleRepo } from '../articles';
+import { TeamStats, TeamStatsRepo } from '../stats';
 
-export type BestOf = '1' | '3' | '5'
+export type BestOf = '1' | '3' | '5';
 
-/**
- * A match up between two teams.
- *
- * e.g. If a given week has 16 games, then there are 16 matches.
- */
 export class Match {
-	/**
-	 * Creates a new instance of a Match.
-	 *
-	 * @param home The home team.
-	 * @param away The away team.
-	 * @param bestOf 1, 3 or 5
-	 * @returns A new instance of Match.
-	 */
-	constructor(public home: string, public away: string, public bestOf: BestOf) {}
+  home: Team;
+  away: Team;
+  bestOf: BestOf;
 
-	/**
-	 * Get the list of articles associated with the given teams in the match.
-	 *
-	 * @returns {Promise<Article[]>} The list of articles for the week associated with the given teams.
-	 */
-	public async articles(): Promise<Article[]> {
-		const teams = [this.away, this.home]
-		verboseLog('Fetching articles for teams', teams)
-		return new ArticleRepo().findByTeams(teams)
-	}
+  constructor(home: string, away: string, bestOf: BestOf) {
+    this.home = new TeamRepo().find(home);
+    this.away = new TeamRepo().find(away);
+    this.bestOf = bestOf;
+  }
 
-	/**
-	 * Get all of this season's stats for the teams in this match.
-	 *
-	 * @returns {Promise<{[key in TeamStatType]: TeamStats[]}>} The stats for the teams
-	 */
-	public async stats(): Promise<{ [key in TeamStatType]: TeamStats[] }> {
-		const teams = [this.away, this.home]
-		const repo = new TeamStatsRepo()
+  get teams(): Team[] {
+    return [this.home, this.away];
+  }
 
-		const stats: { [key in TeamStatType]: TeamStats[] } = {
-			[TeamStatType.TEAM_STATS]: [],
-			[TeamStatType.WORLD_RANKING]: [],
-			[TeamStatType.EVENT_HISTORY]: [],
-			[TeamStatType.MAP_POOL]: [],
-		}
-
-		for (const type of Object.values(TeamStatType)) {
-			for (const team of teams) {
-				const stat = await repo.findByTeamAndType(team, type)
-				if (stat == null) {
-					throw new Error(`No stats found for ${team} and ${type}`)
-				}
-				stats[type].push(stat)
-			}
-		}
-
-		return stats
-	}
-
-	/**
-	 * Get all of the previous results from this same matchup.
-	 *
-	 */
-	public async matchHistory(): Promise<MatchHistory[]> {
-		const teams = [this.away, this.home]
-		const repo = new TeamStatsRepo()
-
-		return repo.findMatchHistory(teams)
-	}
-
-	/**
-	 * Get team's results of the current championship.
-	 *
-	 */
-	public async championshipStats(): Promise<ChampionshipStats[]> {
-		const teams = [this.away, this.home]
-		const repo = new ChampionshipRepo()
-
-		return repo.findTeamsResults(teams)
-	}
+  public async articles(): Promise<Article[]> {
+    return new ArticleRepo().findByTeams(this.teams);
+  }
 }

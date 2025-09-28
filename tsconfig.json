@@ -1,29 +1,16 @@
 {
-	"include": ["src/**/*", "test/**/*"],
-	"compilerOptions": {
-		"lib": ["ES2023"],
-		"target": "ES2022",
-		"baseUrl": "./src",
-		"allowJs": true,
-		"allowUnreachableCode": false,
-		"checkJs": false,
-		"declaration": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"importHelpers": true,
-		"incremental": true,
-		"module": "commonjs",
-		"noImplicitAny": true,
-		"noImplicitOverride": true,
-		"noImplicitReturns": true,
-		"noImplicitThis": true,
-		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"outDir": "./dist/",
-		"pretty": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"strictNullChecks": true
-	}
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "lib": ["es2020", "dom"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

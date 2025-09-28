@@ -1,0 +1,45 @@
+{
+  "cookies": [
+    {
+      "name": "__cflb",
+      "value": "02DiuJA2sEFmcj1ss4cuDJRso8spmWwiP1YNKMdVqspzp",
+      "domain": "www.hltv.org",
+      "path": "/",
+      "expires": 1759113974.749386,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__cf_bm",
+      "value": "sy4xpY5OpsNDEmOEa_zK6HxWDmxj5rb.EaVMxv3rDhY-1759031173-1.0.1.1-i1lzFQg9rvj_fnvdvLXJT6CozjSJHEXLZOXnJFQmMtGjs.Pbro4eTkmIe3CdvoGDPK8ccOj_jCwqokoE_52lFLbaiPAR0rLQrjVfxJKj8V4",
+      "domain": ".hltv.org",
+      "path": "/",
+      "expires": 1759032974.749469,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "CookieConsent",
+      "value": "{stamp:%27ZoiZ+iOZmftGTpmE0+6bqZECNn63Ya83wyjCfPRWUlzfaVm2xECEqQ==%27%2Cnecessary:true%2Cpreferences:false%2Cstatistics:true%2Cmarketing:false%2Cmethod:%27explicit%27%2Cver:1%2Cutc:1759031176563%2Cregion:%27ru%27}",
+      "domain": "www.hltv.org",
+      "path": "/",
+      "expires": 1790567176,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "MatchFilter",
+      "value": "{%22active%22:false%2C%22live%22:false%2C%22stars%22:1%2C%22lan%22:false%2C%22teams%22:[]}",
+      "domain": "www.hltv.org",
+      "path": "/",
+      "expires": 1790567186,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
